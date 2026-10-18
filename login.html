@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STREPTO - Login</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #fcf9f8; --text: #1c1b1b; --text-muted: #737874;
+            --accent: #172820; --accent-hover: #2c3e35;
+            --border: #e2ddd9; --bg-alt: #f0edec;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; display: flex; flex-direction: column;
+        }
+        header {
+            background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+        }
+        .header-inner {
+            max-width: 1280px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { font-size: 1.25rem; font-weight: 700; color: var(--text); text-decoration: none; }
+        .back-link { color: var(--text-muted); text-decoration: none; font-size: 0.875rem; }
+        .back-link:hover { color: var(--text); }
+        .login-container {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+        .login-card {
+            background: #fff; border: 1px solid var(--border);
+            border-radius: 1.5rem; padding: 3rem;
+            width: 100%; max-width: 420px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .login-card h1 {
+            font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .login-card p { text-align: center; color: var(--text-muted); margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label {
+            display: block; font-size: 0.875rem; font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input {
+            width: 100%; padding: 0.75rem 1rem;
+            border: 1px solid var(--border); border-radius: 0.5rem;
+            font-size: 0.95rem; outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus { border-color: var(--accent); }
+        .submit-btn {
+            width: 100%; background: var(--accent); color: #fff;
+            border: none; padding: 0.875rem; border-radius: 0.5rem;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: background 0.2s; margin-top: 0.5rem;
+        }
+        .submit-btn:hover { background: var(--accent-hover); }
+        .switch-text {
+            text-align: center; margin-top: 1.5rem;
+            font-size: 0.875rem; color: var(--text-muted);
+        }
+        .switch-text a {
+            color: var(--accent); font-weight: 600; text-decoration: none;
+        }
+        .switch-text a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="index.html" class="logo">STREPTO</a>
+            <a href="index.html" class="back-link">← Back to Shop</a>
+        </div>
+    </header>
+
+    <div class="login-container">
+        <div class="login-card">
+            <h1>Welcome Back</h1>
+            <p>Sign in to your account</p>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="you@example.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required />
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+            <p class="switch-text">
+                Don't have an account? <a href="#" onclick="alert('Register feature coming soon!')">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const name = email.split('@')[0];
+            localStorage.setItem('user', JSON.stringify({ email, name }));
+            alert('Welcome back, ' + name + '!');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
