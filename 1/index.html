@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STREPTO - Home</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #fcf9f8; --bg-alt: #f0edec; --text: #1c1b1b;
+            --text-muted: #737874; --accent: #172820;
+            --accent-hover: #2c3e35; --border: #e2ddd9;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: var(--bg); color: var(--text); line-height: 1.5;
+        }
+        header {
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-inner {
+            max-width: 1280px; margin: 0 auto; padding: 1rem 1.5rem;
+            display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+        }
+        .logo { font-size: 1.25rem; font-weight: 700; color: var(--text); text-decoration: none; }
+        nav.main-nav { display: flex; align-items: center; gap: 1.5rem; }
+        nav.main-nav a {
+            font-size: 0.875rem; font-weight: 500; color: var(--text-muted);
+            text-decoration: none; transition: color 0.2s;
+        }
+        nav.main-nav a:hover, nav.main-nav a.active { color: var(--text); }
+        .login-btn {
+            background: var(--accent); color: #fff; padding: 0.5rem 1rem;
+            border-radius: 999px; font-size: 0.875rem; font-weight: 500;
+            text-decoration: none; transition: background 0.2s;
+        }
+        .login-btn:hover { background: var(--accent-hover); }
+        .hero { padding: 6rem 1.5rem 4rem; text-align: center; }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700;
+            line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em;
+        }
+        .hero p {
+            max-width: 640px; margin: 0 auto; font-size: 1.125rem;
+            color: var(--text-muted); line-height: 1.7;
+        }
+        .products-section { padding: 4rem 1.5rem; max-width: 1280px; margin: 0 auto; }
+        .section-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; margin-bottom: 0.5rem; }
+        .section-sub { color: var(--text-muted); margin-bottom: 2.5rem; }
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background: #fff; border-radius: 0.75rem; overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
+        .product-image { aspect-ratio: 4/5; background: var(--bg-alt); overflow: hidden; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+        .product-card:hover .product-image img { transform: scale(1.05); }
+        .product-info { padding: 1.25rem; }
+        .product-name { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .product-price { font-size: 1.125rem; font-weight: 700; color: var(--accent); margin-bottom: 0.75rem; }
+        .add-btn {
+            width: 100%; background: var(--accent); color: #fff;
+            border: none; padding: 0.6rem; border-radius: 0.5rem;
+            font-size: 0.875rem; font-weight: 600; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .add-btn:hover { background: var(--accent-hover); }
+        footer { background: var(--bg-alt); border-top: 1px solid var(--border); margin-top: 4rem; }
+        .footer-inner {
+            max-width: 1280px; margin: 0 auto; padding: 4rem 1.5rem;
+            display: grid; gap: 3rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+        .footer-inner h4 {
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem;
+        }
+        .footer-inner p, .footer-inner li { font-size: 0.875rem; color: var(--text-muted); line-height: 1.8; }
+        .footer-inner ul { list-style: none; }
+        .footer-brand { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; }
+        .copyright { text-align: center; padding: 1.5rem; font-size: 0.8125rem; color: var(--text-muted); border-top: 1px solid var(--border); }
+        @media (max-width: 768px) { nav.main-nav { display: none; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="index.html" class="logo">STREPTO</a>
+            <nav class="main-nav">
+                <a href="index.html" class="active">Shop</a>
+                <a href="orders.html">Orders</a>
+                <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            </nav>
+            <a href="login.html" class="login-btn">Login</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Timeless Essentials.<br />Modern Living.</h1>
+        <p>Curated artifacts for modern living. Embracing quiet luxury through intentional design and uncompromising craftsmanship.</p>
+    </section>
+
+    <section class="products-section">
+        <h2 class="section-title">Explore products</h2>
+        <p class="section-sub">Best products available with the best prices!</p>
+        <div class="products-grid" id="products"></div>
+    </section>
+
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand">STREPTO</div>
+                <p>A modern marketplace for premium essentials.</p>
+            </div>
+            <div><h4>Explore</h4><ul><li>Collections</li><li>About</li><li>Contact</li></ul></div>
+            <div><h4>Support</h4><ul><li>Shipping</li><li>Returns</li><li>Customer care</li></ul></div>
+            <div><h4>Contact</h4><p>mohamedyousry@email.com</p></div>
+        </div>
+        <div class="copyright">© 2026 Mohamed Yousry. All rights reserved.</div>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1,  name: "Minimalist Watch",   price: 249, img: "images/photo-1523275335684-37898b6baf30.jpeg" },
+            { id: 2,  name: "Classic Sneakers",   price: 189, img: "images/photo-1542291026-7eec264c27ff.jpeg" },
+            { id: 3,  name: "Studio Headphones",  price: 349, img: "images/photo-1505740420928-5e560c06d30e.jpeg" },
+            { id: 4,  name: "Vintage Camera",     price: 529, img: "images/photo-1526170375885-4d8ecf77b99f.jpeg" },
+            { id: 5,  name: "Leather Backpack",   price: 159, img: "images/photo-1553062407-98eeb64c6a62.jpeg" },
+            { id: 6,  name: "Modern Chair",       price: 399, img: "images/photo-1592078615290-033ee584e267.jpeg" },
+            { id: 7,  name: "Designer Sunglasses",price: 229, img: "images/photo-1585386959984-a4155224a1ad.jpeg" },
+            { id: 8,  name: "Smart Speaker",      price: 279, img: "images/photo-1608043152269-423dbba4e7e1.jpeg" },
+            { id: 9,  name: "Wrist Watch Pro",    price: 459, img: "images/photo-1511385348-a52b4a160dc2.jpeg" },
+            { id: 10, name: "Wireless Earbuds",   price: 149, img: "images/photo-1546868871-7041f2a55e12.jpeg" },
+            { id: 11, name: "Mechanical Keyboard",price: 189, img: "images/photo-1587829741301-dc798b83add3.jpeg" },
+            { id: 12, name: "Minimal Desk Lamp",  price: 99,  img: "images/photo-1507473885765-e6ed057f782c.jpeg" }
+        ];
+
+        const productsGrid = document.getElementById('products');
+        productsGrid.innerHTML = products.map(p => `
+            <div class="product-card">
+                <div class="product-image"><img src="${p.img}" alt="${p.name}" /></div>
+                <div class="product-info">
+                    <div class="product-name">${p.name}</div>
+                    <div class="product-price">$${p.price}</div>
+                    <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
+                </div>
+            </div>
+        `).join('');
+
+        function addToCart(id) {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(product.name + ' added to cart!');
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-count').textContent = count;
+        }
+
+        updateCartCount();
+    </script>
+</body>
+</html>
