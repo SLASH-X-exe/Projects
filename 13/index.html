@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#14386B">
+<title>صيدلية النجومي | Al-Nagoumi Pharmacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&amp;family=Tajawal:wght@400;500;700&amp;family=IBM+Plex+Sans+Arabic:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<script src="firebasejs/firebase-app-compat.js"></script>
+<script src="firebasejs/firebase-database-compat.js"></script>
+<script src="firebasejs/firebase-auth-compat.js"></script>
+<style>
+:root{
+  --bg:#F4F6FB;
+  --surface:#FFFFFF;
+  --ink:#0F2240;
+  --muted:#66758F;
+  --primary:#14386B;
+  --primary-2:#1F5FA8;
+  --soft:#E8EEF8;
+  --accent:#F2A93B;
+  --accent-dark:#D98C14;
+  --accent-soft:#FDF1DC;
+  --ok:#1FA37A;
+  --ok-soft:#DDF4EC;
+  --danger:#D9435A;
+  --danger-soft:#FCE6EA;
+  --info-soft:#E3EEFB;
+  --border:#E1E7F1;
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow:0 6px 22px rgba(20,56,107,.08);
+  --shadow-lg:0 16px 48px rgba(20,56,107,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Tajawal',sans-serif;line-height:1.6;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Cairo',sans-serif;font-weight:800}
+.num{font-family:'IBM Plex Sans Arabic',sans-serif}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;color:inherit}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#c9d4e8;border-radius:10px}
+.hidden{display:none!important}
+.i{vertical-align:-3px;flex-shrink:0}
+h2 .i,h3 .i{vertical-align:-4px;margin-left:6px}
+.chip,.mini-btn,.fab,.btn-gold,.btn-ghost,.btn-primary,.btn-accent,.btn-outline,.pay-opt,.footer-whatsapp{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn-primary,.btn-accent,.btn-outline{display:flex}
+.trust .ti{color:var(--primary-2)}
+.empty-state .ic{display:flex;justify-content:center;color:#b3c1da}
+.wa-float svg{display:block}
+.close-x svg{display:block}
+.vis{position:relative;display:block;width:100%;height:100%}
+.vis svg,.vis img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vis img{object-fit:contain;background:#fff;padding:4px}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.topbar-inner{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-family:'Cairo';font-weight:900;font-size:20px;color:var(--primary);white-space:nowrap}
+.brand .mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.brand .mark svg{width:22px;height:22px}
+.search-wrap{flex:1;max-width:460px;position:relative}
+.search-wrap input{width:100%;padding:12px 44px 12px 16px;border-radius:999px;border:1.5px solid var(--border);background:var(--bg);font-size:14px;outline:none;transition:.2s}
+.search-wrap input:focus{border-color:var(--primary-2);background:#fff}
+.search-wrap .ic{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;display:flex}
+.top-actions{display:flex;align-items:center;gap:8px;margin-right:auto}
+.icon-btn{position:relative;min-width:42px;height:42px;padding:0 12px;border-radius:12px;background:#fff;border:1.5px solid var(--border);display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:14px;font-weight:700;color:var(--primary);transition:.2s}
+.icon-btn:hover{border-color:var(--primary-2);background:var(--soft)}
+.badge{position:absolute;top:-7px;left:-7px;background:var(--accent);color:#2b1c00;font-size:11px;font-weight:800;min-width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.admin-link{font-size:13px;color:var(--muted);padding:9px 12px;border-radius:999px}
+.admin-link:hover{color:var(--primary)}
+.hero{max-width:1200px;margin:22px auto 0;padding:0 20px}
+.hero-card{background:linear-gradient(120deg,#0E2A52 0%,#14386B 55%,#1F5FA8 100%);border-radius:28px;padding:44px 40px;color:#fff;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.hero-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 12% 20%,rgba(242,169,59,.22),transparent 40%),radial-gradient(circle at 90% 90%,rgba(255,255,255,.12),transparent 45%)}
+.hero-card>*{position:relative}
+.hero h1{font-size:38px;line-height:1.35;margin-bottom:12px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{opacity:.88;font-size:16px;max-width:520px;margin-bottom:22px}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn-gold{background:var(--accent);color:#2b1c00;padding:13px 24px;border-radius:12px;font-weight:800;font-size:15px;transition:.2s}
+.btn-gold:hover{background:var(--accent-dark)}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;padding:13px 22px;border-radius:12px;font-weight:700;font-size:15px;border:1px solid rgba(255,255,255,.25)}
+.btn-ghost:hover{background:rgba(255,255,255,.2)}
+.hero-art{display:flex;justify-content:center}
+.hero-art svg{width:100%;max-width:230px;filter:drop-shadow(0 12px 28px rgba(0,0,0,.25))}
+.trust{max-width:1200px;margin:18px auto 0;padding:0 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.trust div{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted)}
+.trust b{display:block;color:var(--ink);font-size:14px;font-family:'Cairo'}
+.trust .ti{width:40px;height:40px;border-radius:12px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.section-head{max-width:1200px;margin:30px auto 0;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.section-head h2{font-size:22px;color:var(--primary)}
+.sort-sel{padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);background:#fff;font-size:13px;outline:none}
+.cats{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:10px 18px;border-radius:999px;background:#fff;border:1.5px solid var(--border);font-size:14px;font-weight:700;color:var(--ink);transition:.2s;cursor:pointer}
+.chip small{opacity:.6;font-weight:500;margin-right:4px}
+.chip:hover{border-color:var(--primary-2)}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.grid-wrap{max-width:1200px;margin:0 auto;padding:6px 20px 60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;gap:8px;transition:.22s;position:relative}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-3px);border-color:#c9d8ef}
+.pic{position:relative;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:var(--soft);cursor:pointer}
+.pic svg,.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.badges{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+.b{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:999px}
+.b-sale{background:var(--danger);color:#fff}
+.b-rx{background:var(--accent);color:#2b1c00}
+.b-warn{background:#fff;color:var(--danger);border:1px solid var(--danger-soft)}
+.soldout{position:absolute;inset:0;background:rgba(255,255,255,.78);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--danger)}
+.card .cat-tag{font-size:11px;color:var(--muted)}
+.card h4{font-family:'Tajawal';font-size:15px;font-weight:700;min-height:44px;line-height:1.4}
+.price-row{display:flex;align-items:center;justify-content:space-between;margin-top:auto;gap:8px}
+.price{font-size:17px;font-weight:700;color:var(--primary)}
+.old{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.add-btn{background:var(--primary);color:#fff;width:38px;height:38px;border-radius:12px;font-size:22px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.add-btn:hover{background:var(--primary-2)}
+.add-btn:disabled{background:var(--border);cursor:not-allowed}
+.stepper{display:flex;align-items:center;gap:4px;background:var(--soft);border-radius:12px;padding:3px}
+.stepper button{width:30px;height:30px;border-radius:9px;background:#fff;font-size:17px;font-weight:700;color:var(--primary)}
+.stepper span{min-width:22px;text-align:center;font-weight:700}
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty-state .ic{font-size:44px;margin-bottom:10px}
+.drawer-backdrop{position:fixed;inset:0;background:rgba(15,34,64,.45);z-index:60;opacity:0;pointer-events:none;transition:.25s}
+.drawer-backdrop.show{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;left:0;height:100%;width:420px;max-width:94vw;background:#fff;z-index:70;transform:translateX(-105%);transition:.3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:6px 0 30px rgba(0,0,0,.15)}
+.drawer.show{transform:translateX(0)}
+.drawer-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.drawer-body{flex:1;overflow-y:auto;padding:8px 20px}
+.cart-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);align-items:center}
+.cart-item .thumb{width:58px;height:58px;border-radius:12px;overflow:hidden;flex-shrink:0;background:var(--soft)}
+.cart-item .thumb svg,.cart-item .thumb img{width:100%;height:100%;object-fit:cover}
+.cart-item .info{flex:1;min-width:0}
+.cart-item .nm{font-weight:700;font-size:14px}
+.drawer-foot{padding:16px 20px;border-top:1px solid var(--border);background:#fafbfe}
+.free-bar{background:var(--accent-soft);border-radius:12px;padding:10px 12px;font-size:12.5px;margin-bottom:12px;color:#7a5200}
+.free-bar .track{height:6px;background:#fff;border-radius:6px;margin-top:6px;overflow:hidden}
+.free-bar .fill{height:100%;background:var(--accent);border-radius:6px;transition:.3s}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:6px}
+.total-row{display:flex;justify-content:space-between;font-weight:800;font-size:18px;margin:10px 0 14px}
+.btn-primary{background:var(--primary);color:#fff;padding:13px;border-radius:12px;width:100%;font-weight:800;font-size:15px;transition:.2s}
+.btn-primary:hover{background:var(--primary-2)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-accent{background:var(--accent);color:#2b1c00;padding:13px;border-radius:12px;width:100%;font-weight:800;font-size:15px}
+.btn-accent:hover{background:var(--accent-dark)}
+.btn-outline{background:#fff;border:1.5px solid var(--border);padding:12px;border-radius:12px;width:100%;font-weight:700}
+.modal-backdrop{position:fixed;inset:0;background:rgba(15,34,64,.5);z-index:80;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.show{display:flex}
+.modal{background:#fff;border-radius:22px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;padding:26px;box-shadow:var(--shadow-lg);position:relative}
+.modal h3{margin-bottom:16px;color:var(--primary)}
+.close-x{position:absolute;top:16px;left:16px;width:34px;height:34px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:15px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--muted)}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border-radius:11px;border:1.5px solid var(--border);font-size:14px;outline:none;background:#fafbfe}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary-2);background:#fff}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pay-options{display:flex;gap:10px}
+.pay-opt{flex:1;border:1.5px solid var(--border);border-radius:12px;padding:13px 8px;text-align:center;font-size:13px;font-weight:700;transition:.2s;cursor:pointer}
+.pay-opt.active{border-color:var(--primary);background:var(--soft);color:var(--primary)}
+.note-box{background:var(--info-soft);border-radius:12px;padding:14px;margin-bottom:14px}
+.note-box .hint{font-size:12px;color:var(--muted);margin:6px 0 10px}
+.track-card{border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
+.steps{display:flex;gap:6px;margin-top:12px}
+.steps i{flex:1;height:6px;border-radius:6px;background:var(--border)}
+.steps i.on{background:var(--ok)}
+.steps.bad i.on{background:var(--danger)}
+.wa-float{position:fixed;bottom:20px;right:20px;z-index:45;background:#25D366;color:#fff;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 22px rgba(37,211,102,.45)}
+.site-footer{background:var(--primary);color:#fff;margin-top:20px;padding:34px 20px 26px;text-align:center}
+.site-footer .row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.footer-whatsapp{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;background:#25D366;color:#fff;padding:10px 20px;border-radius:999px}
+.footer-copy{font-size:12px;opacity:.65}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--ink);color:#fff;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;z-index:120;transition:.3s;opacity:0;max-width:92vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.err{background:var(--danger)}
+.toast.ok{background:var(--ok)}
+.demo-banner{position:sticky;top:0;z-index:50;background:var(--accent);color:#2b1c00;text-align:center;padding:8px 14px;font-size:13px;font-weight:700}
+.detail-pic{aspect-ratio:1/1;border-radius:16px;overflow:hidden;margin-bottom:14px;background:var(--soft)}
+.detail-pic svg,.detail-pic img{width:100%;height:100%;object-fit:cover}
+.admin-shell{display:flex;min-height:100vh}
+.sidebar{width:236px;background:linear-gradient(180deg,#0E2A52,#14386B);color:#fff;display:flex;flex-direction:column;padding:22px 0;flex-shrink:0}
+.sidebar .brand{color:#fff;padding:0 20px 22px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:14px}
+.sidebar .brand .mark{background:rgba(255,255,255,.14);box-shadow:none}
+.nav-item{display:flex;align-items:center;gap:12px;padding:13px 20px;font-size:14px;font-weight:700;color:rgba(255,255,255,.75);border-right:3px solid transparent;transition:.2s;cursor:pointer}
+.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.12);color:#fff;border-right-color:var(--accent)}
+.nav-item .ic{width:20px;text-align:center}
+.nav-item .cnt{margin-right:auto;background:var(--accent);color:#2b1c00;font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px}
+.sidebar .logout{margin-top:auto;padding:13px 20px;color:rgba(255,255,255,.65);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.sidebar-copy{padding:6px 20px 4px;font-size:10.5px;color:rgba(255,255,255,.4)}
+.admin-main{flex:1;padding:26px 30px;overflow-x:hidden;min-width:0}
+.admin-topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:10px}
+.admin-topline h2{font-size:24px;color:var(--primary)}
+.who{font-size:13px;color:var(--muted)}
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:22px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.stat-card .lbl{font-size:12.5px;color:var(--muted);font-weight:700;margin-bottom:8px}
+.stat-card .val{font-size:25px;font-weight:800;font-family:'Cairo'}
+.stat-card.alert{border-color:#f4b9c3;background:var(--danger-soft)}
+.stat-card.alert .val{color:var(--danger)}
+.panel{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+.panel-head h3{font-size:16px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:right;padding:10px 8px;color:var(--muted);font-weight:700;font-size:12px;border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.pill{padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:800;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--accent-soft);color:#a86a00}
+.pill.danger{background:var(--danger-soft);color:var(--danger)}
+.pill.pending{background:var(--info-soft);color:var(--primary-2)}
+.mini-btn{padding:7px 12px;border-radius:9px;font-size:12.5px;font-weight:700;background:var(--soft);color:var(--ink);display:inline-block}
+.mini-btn.primary{background:var(--primary);color:#fff}
+.mini-btn.danger{background:var(--danger-soft);color:var(--danger)}
+.mini-btn+.mini-btn{margin-right:6px}
+.toolbar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.toolbar input,.toolbar select{padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;background:#fafbfe;outline:none}
+.fab{background:var(--accent);color:#2b1c00;padding:10px 18px;border-radius:11px;font-weight:800;font-size:13.5px}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mini-table{min-width:480px}
+.orders-table{min-width:860px}
+.order-actions{display:flex;flex-wrap:wrap;gap:6px}
+.rotate-hint{display:none}
+.thumb-sm{width:42px;height:42px;border-radius:10px;overflow:hidden;background:var(--soft);display:inline-block;vertical-align:middle;margin-left:8px}
+.thumb-sm svg,.thumb-sm img{width:100%;height:100%;object-fit:cover}
+.bars{display:flex;align-items:flex-end;gap:12px;height:150px;padding-top:10px}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px;font-size:11px;color:var(--muted)}
+.bar i{display:block;width:100%;max-width:44px;background:linear-gradient(180deg,var(--primary-2),var(--primary));border-radius:8px 8px 3px 3px;min-height:3px}
+.bar b{font-family:'IBM Plex Sans Arabic';font-size:10.5px;color:var(--ink)}
+.pos-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+.pos-products{max-height:72vh;overflow-y:auto}
+.pos-cart{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:16px;height:fit-content;position:sticky;top:20px}
+.pos-item{cursor:pointer}
+.pos-item:hover{border-color:var(--primary-2)}
+.img-prev{width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--soft);margin-bottom:8px}
+.img-prev img,.img-prev svg{width:100%;height:100%;object-fit:contain}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,#0E2A52,#1F5FA8);padding:20px}
+.login-card{background:#fff;border-radius:22px;padding:36px;width:100%;max-width:380px;box-shadow:var(--shadow-lg);text-align:center}
+.login-card .mark{width:58px;height:58px;margin:0 auto 14px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:flex;align-items:center;justify-content:center}
+.login-card .mark svg{width:28px;height:28px}
+.admin-mobile-copy{display:none;text-align:center;font-size:10.5px;color:var(--muted);padding:14px 20px 20px}
+@media(max-width:900px){
+  .hero-card{grid-template-columns:1fr;padding:30px 24px}
+  .hero-art{display:none}
+  .hero h1{font-size:29px}
+  .trust{grid-template-columns:1fr 1fr}
+  .pos-grid{grid-template-columns:1fr}
+  .admin-shell{flex-direction:column}
+  .sidebar{width:100%;flex-direction:row;overflow-x:auto;padding:8px}
+  .sidebar .brand{display:none}
+  .sidebar .logout{margin-top:0;white-space:nowrap}
+  .nav-item{border-right:none;border-bottom:3px solid transparent;white-space:nowrap}
+  .nav-item.active{border-bottom-color:var(--accent)}
+  .sidebar-copy{display:none}
+  .admin-mobile-copy{display:block}
+  .admin-main{padding:18px 14px}
+  .field-row{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .topbar-inner{gap:8px;padding:10px 12px;flex-wrap:wrap}
+  .brand{font-size:17px}
+  .search-wrap{order:3;flex-basis:100%;max-width:none}
+  .admin-link{display:none}
+  .hero,.trust,.section-head,.grid-wrap,.cats{padding-left:14px;padding-right:14px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .card{padding:9px}
+  .card h4{font-size:13.5px;min-height:38px}
+  .stat-cards{grid-template-columns:1fr 1fr}
+  .rotate-hint{display:block;background:var(--accent-soft);color:#a86a00;border-radius:10px;padding:10px 14px;font-size:12.5px;font-weight:700;margin-bottom:14px}
+  .orders-table,.orders-table thead,.orders-table tbody,.orders-table th,.orders-table td,.orders-table tr{display:block;width:100%}
+  .orders-table{min-width:0}
+  .orders-table tr:first-child{display:none}
+  .orders-table tr{margin-bottom:14px;border:1px solid var(--border);border-radius:12px;padding:6px 10px;background:#fff}
+  .orders-table td{border:none;border-bottom:1px solid var(--border);padding:10px 6px 10px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .orders-table td:last-child{border-bottom:none;flex-direction:column;align-items:stretch}
+  .orders-table td::before{content:attr(data-label);font-weight:700;color:var(--muted);font-size:12px;flex-shrink:0}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCeS4cVK37sRTZPg2FJA4P9UAaUbCfktg4",
+  authDomain: "alnoorpharmacy-6c4ed.firebaseapp.com",
+  databaseURL: "https://alnoorpharmacy-6c4ed-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "alnoorpharmacy-6c4ed",
+  storageBucket: "alnoorpharmacy-6c4ed.firebasestorage.app",
+  messagingSenderId: "590986347504",
+  appId: "1:590986347504:web:a26c8bd07204bfce4d5335",
+  measurementId: "G-MQ6WX6Q5Q9"
+};
+const paymentsFirebaseConfig = {
+  apiKey: "AIzaSyA6mlgSW5KYiuaa607ZlLhuhG48QvAzmBA",
+  authDomain: "alnoorpayments-b1f8f.firebaseapp.com",
+  databaseURL: "https://alnoorpayments-b1f8f-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "alnoorpayments-b1f8f",
+  storageBucket: "alnoorpayments-b1f8f.firebasestorage.app",
+  messagingSenderId: "724838339466",
+  appId: "1:724838339466:web:7498bebde0292f34fc2e73",
+  measurementId: "G-QN9YEWBKT7"
+};
+
+const PHARMACY_NAME = "صيدلية النجومي";
+const PHARMACY_PHONE = "01000000000";
+const SUPPORT_WHATSAPP = "01000000001";
+const INSTAPAY_LINK = "https://ipn.eg/S/mahmoud_ashraf/instapay/2Uk587";
+const DELIVERY_FEE = 20;
+const FREE_DELIVERY_FROM = 300;
+const ADMINS = [
+  { user: "admin", hash: "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", name: "المدير العام" }
+];
+const CATEGORIES = [
+  { id:"meds", name:"أدوية", icon:"pill" },
+  { id:"skincare", name:"عناية بالبشرة", icon:"droplets" },
+  { id:"baby", name:"مستلزمات أطفال", icon:"baby" },
+  { id:"vitamins", name:"فيتامينات ومكملات", icon:"leaf" },
+  { id:"devices", name:"أجهزة طبية", icon:"stethoscope" },
+  { id:"personal", name:"عناية شخصية", icon:"sparkles" }
+];
+const LOW_STOCK_THRESHOLD = 10;
+const EXPIRY_WARNING_DAYS = 60;
+const STORAGE_FREE_LIMIT_MB = 1024;
+const STORAGE_WARNING_MB = 600;
+const STORAGE_AUTOCLEAN_MB = 750;
+const OLD_ORDER_DAYS_FOR_CLEANUP = 30;
+const IMAGES_FOLDER = "images/";
+const IMAGE_FILES = ["أدالات ريتارد.jpeg", "أدول اكسترا.jpeg", "أسبرين بروتكت.webp", "أسبوسيد 100.webp", "أسبوكيد بروتكت.jpg", "أكرتين جل.webp", "أماريل 2.webp", "أمبروكسول شراب.jpeg", "أموكسيل 500.jpeg", "أوتريفين نقط أنف.jpeg", "أوجمنتين 1 جم.jpg", "أوميجا 3.jpeg", "أوميجا كيدز شراب.webp", "انتينال أقراص.jpeg", "انسولين لانتوس.jpeg", "انسولين ميكستارد.jpeg", "بانثينول كريم،webp.webp", "بروتين باودر.jpeg", "بروفين 400.jpeg", "بلافيكس 75.jpeg", "بنادول إكسترا.webp", "بنادول نايت.webp", "بنادول.png", "بوسكوبانwebp.webp", "بيبزول 20.jpeg", "بيتاديرم كريم.webp", "بيزولفون شراب.jpeg", "ترمومتر أطفال رقمي.jpeg", "تيراد،.jpeg", "تينورمين 50webp.webp", "جافيسكون شراب.webp", "جانيوفيا 100.jpeg", "جلوكوفاج 500.jpeg", "جهاز استنشاق نيبيولايزر.jpg", "جهاز قياس الأكسجين.jpeg", "جهاز قياس سكر أكيوتشيك.webp", "جهاز قياس ضغط رقمي.jpeg", "حفاضات بيبي جوي مقاس 3.jpeg", "حليب صناعي نان 1.jpeg", "دايجستين.jpeg", "دايفلوسين مضاد فطريات.jpeg", "ديجوكسين.jpeg", "ديسفلاتيل.webp", "ديوفان 80.jpeg", "ريفو 400، مينزال.webp", "ريفيتوس شراب.jpeg", "زنك بلس.webp", "زيثروماكس 500.jpeg", "زيرتك.jpg", "سبورانوكس 100.jpeg", "سملاك شراب.jpeg", "سنتروم مالتي فيتامين.jpeg", "سودوكريم.jpeg", "سيبروسين 500.jpeg", "سيتوفيل.jpeg", "سيفوتاكس حقن.jpg", "شامبو هيد اند شولدرز.jpeg", "شراب بانادول أطفال.jpeg", "صن بلوك SPF50.jpeg", "غسول وجه سيرافي.jpg", "فرشاة أسنان أورال بي.jpeg", "فلاجيل 500.png", "فلاي مين.png", "فلوموكس 1 جم.jpeg", "فورزيجا 10.webp", "فولتارين جل.webp", "فوليك أسيد.jpeg", "فيتامين ب كومبلكس.jpg", "فيتامين د3 5600.jpeg", "فيتامين د3.jpeg", "فيتامين سي 1000.webp", "فينتولين بخاخ.jpg", "فيوسيدين كريم.webp", "قط فيتامين د للرضع.webp", "كاتافلام 50 مجم.jpeg", "كالامين لوشن.jpeg", "كالسيوم.jpeg", "كريم نيفيا مرطب.jpeg", "كلاريتين.jpeg", "كلاسيد 500.jpeg", "كمادات حرارية.jpg", "كوفرسيل 5.webp", "كونكور 5.webp", "كيناكومب مرهم.webp", "لوزارتان 50.jpeg", "ماغنسيوم + ب6.jpeg", "مالتي فيتامين للأطفال.jpeg", "مرطب سيتافيل.avif", "مطهر جروح للأطفال.jpeg", "موتيليوم.jpg", "ميزان حرارة رقمي.jpeg", "نورفاسك 5.jpeg", "نورماكول.jpg", "نوفالجين أقراص.jpg", "نيكسيوم 40.webp", "يونيدوكس سولوتاب.webp"];
+const IMAGE_ALIASES = {
+  "سينوفيل":"سيتوفيل.jpeg",
+  "نقط فيتامين د للرضع":"قط فيتامين د للرضع.webp",
+  "حديد + فوليك أسيد":"فوليك أسيد.jpeg",
+  "كالسيوم + فيتامين د3":"كالسيوم.jpeg"
+};
+
+const SEED = [
+["بنادول","meds",92,200,"2027-05-01",0],["بنادول إكسترا","meds",135,180,"2027-06-01",0],["بنادول نايت","meds",48,60,"2027-03-01",0],
+["كاتافلام 50 مجم","meds",86,90,"2026-11-01",0],["فولتارين جل","meds",120,70,"2027-01-15",0],["بروفين 400","meds",90,150,"2027-04-10",0],
+["أدول اكسترا","meds",45,140,"2027-02-20",0],["أسبوسيد 100","meds",21,120,"2027-07-01",0],["أسبرين بروتكت","meds",85,100,"2027-05-20",0],
+["نوفالجين أقراص","meds",42,80,"2026-12-01",0],["ريفو 400","meds",40,65,"2027-03-15",0],["مينزال","meds",35,50,"2026-10-05",0],
+["أوجمنتين 1 جم","meds",210,40,"2026-08-15",1],["أموكسيل 500","meds",75,55,"2026-09-01",1],["زيثروماكس 500","meds",160,30,"2026-10-20",1],
+["سيبروسين 500","meds",85,45,"2026-11-10",1],["فلاجيل 500","meds",48,70,"2027-01-01",1],["كلاسيد 500","meds",195,25,"2026-08-25",1],
+["يونيدوكس سولوتاب","meds",98,35,"2026-09-15",1],["سبورانوكس 100","meds",225,15,"2026-10-01",1],["سيفوتاكس حقن","meds",95,20,"2026-07-25",1],
+["فلوموكس 1 جم","meds",115,28,"2026-12-10",1],["موتيليوم","meds",65,60,"2027-02-01",0],["بوسكوبان","meds",45,80,"2027-03-20",0],
+["جافيسكون شراب","meds",95,50,"2027-04-15",0],["نيكسيوم 40","meds",260,35,"2026-09-05",1],["بيبزول 20","meds",68,60,"2027-01-10",0],
+["انتينال أقراص","meds",55,70,"2027-05-05",0],["نورماكول","meds",85,40,"2027-06-15",0],["دايجستين","meds",38,55,"2027-02-28",0],
+["سملاك شراب","meds",55,45,"2027-03-10",0],["ديسفلاتيل","meds",45,50,"2027-04-20",0],["فينتولين بخاخ","meds",165,45,"2026-11-20",1],
+["تيراد","meds",52,65,"2027-01-25",0],["زيرتك","meds",60,90,"2027-05-10",0],["كلاريتين","meds",75,70,"2027-06-05",0],
+["بيزولفون شراب","meds",45,55,"2027-02-15",0],["أمبروكسول شراب","meds",33,80,"2027-03-01",0],["أوتريفين نقط أنف","meds",35,60,"2027-04-05",0],
+["ريفيتوس شراب","meds",42,45,"2027-01-30",0],["سينوفيل","meds",55,40,"2026-12-20",0],["فلاي مين","meds",35,85,"2027-05-25",0],
+["كونكور 5","meds",98,50,"2027-01-01",1],["نورفاسك 5","meds",84,55,"2027-02-10",1],["كوفرسيل 5","meds",110,35,"2026-11-15",1],
+["أسبوكيد بروتكت","meds",28,100,"2027-06-10",0],["بلافيكس 75","meds",311,20,"2026-09-20",1],["ديوفان 80","meds",180,30,"2027-03-05",1],
+["لوزارتان 50","meds",75,45,"2027-04-25",1],["تينورمين 50","meds",56,40,"2027-01-18",1],["أدالات ريتارد","meds",85,35,"2026-10-10",1],
+["ديجوكسين","meds",33,25,"2026-08-05",1],["جلوكوفاج 500","meds",50,90,"2027-05-15",1],["أماريل 2","meds",95,40,"2027-02-05",1],
+["جانيوفيا 100","meds",510,20,"2026-11-25",1],["انسولين لانتوس","meds",1244,12,"2026-07-20",1],["انسولين ميكستارد","meds",130,15,"2026-08-10",1],
+["فورزيجا 10","meds",602,18,"2026-12-15",1],["فيتامين سي 1000","vitamins",85,100,"2027-06-20",0],["سنتروم مالتي فيتامين","vitamins",650,55,"2027-04-01",0],
+["كالسيوم + فيتامين د3","vitamins",125,70,"2027-05-05",0],["أوميجا 3","vitamins",145,60,"2027-03-15",0],["حديد + فوليك أسيد","vitamins",120,80,"2027-02-20",0],
+["زنك بلس","vitamins",75,65,"2027-01-10",0],["فيتامين د3 5600","vitamins",90,75,"2027-06-01",0],["مالتي فيتامين للأطفال","vitamins",65,50,"2027-04-18",0],
+["بروتين باودر","vitamins",2150,20,"2027-08-01",0],["أوميجا كيدز شراب","vitamins",120,40,"2027-03-25",0],["فيتامين ب كومبلكس","vitamins",75,60,"2027-02-14",0],
+["ماغنسيوم + ب6","vitamins",85,55,"2027-05-30",0],["فيوسيدين كريم","meds",95,45,"2027-01-20",0],["بيتاديرم كريم","meds",45,60,"2027-02-25",0],
+["كيناكومب مرهم","meds",55,40,"2026-12-05",0],["دايفلوسين مضاد فطريات","meds",50,50,"2027-03-10",0],["أكرتين جل","meds",145,30,"2026-10-15",1],
+["بانثينول كريم","meds",55,65,"2027-04-05",0],["كالامين لوشن","meds",40,55,"2027-05-20",0],["سودوكريم","baby",240,70,"2027-06-10",0],
+["كريم نيفيا مرطب","skincare",120,60,"2028-01-01",0],["شامبو هيد اند شولدرز","personal",130,3,"2027-05-01",0],["صن بلوك SPF50","skincare",250,35,"2027-07-01",0],
+["غسول وجه سيرافي","skincare",500,25,"2027-08-15",0],["مرطب سيتافيل","skincare",575,30,"2027-09-01",0],["فرشاة أسنان أورال بي","personal",75,50,"2028-01-01",0],
+["حفاضات بيبي جوي مقاس 3","baby",440,25,"2027-11-01",0],["ترمومتر أطفال رقمي","devices",150,20,"",0],["شراب بانادول أطفال","baby",45,70,"2027-04-10",0],
+["نقط فيتامين د للرضع","baby",25,45,"2027-05-15",0],["مطهر جروح للأطفال","baby",65,55,"2027-03-01",0],["حليب صناعي نان 1","baby",365,20,"2027-06-01",0],
+["جهاز قياس ضغط رقمي","devices",2300,8,"",0],["جهاز قياس سكر أكيوتشيك","devices",1400,10,"",0],["ميزان حرارة رقمي","devices",105,30,"",0],
+["جهاز استنشاق نيبيولايزر","devices",2000,6,"",0],["جهاز قياس الأكسجين","devices",600,15,"",0],["كمادات حرارية","devices",110,40,"2028-01-01",0]
+];
+
+const LOCAL_DB = { products:{}, orders:{}, prescriptions:{}, payments:{} };
+
+SEED.forEach((r,i)=>{ LOCAL_DB.products['m'+(i+1)] = { name:r[0], category:r[1], price:r[2], stock:r[3], expiry:r[4], rx:!!r[5] }; });
+
+const ICONS = {
+  pill:'<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>',
+  droplets:'<path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>',
+  baby:'<path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/>',
+  leaf:'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+  stethoscope:'<path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/>',
+  sparkles:'<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>',
+  search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  package:'<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
+  cart:'<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
+  message:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+  truck:'<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>',
+  shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  file:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+  x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  banknote:'<rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>',
+  landmark:'<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  checkcircle:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+  xcircle:'<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>',
+  paperclip:'<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>',
+  trash:'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>',
+  database:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>',
+  eraser:'<path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/>',
+  alert:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  dashboard:'<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
+  receipt:'<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>',
+  trending:'<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  undo:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+  rotate:'<path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/>',
+  arrowright:'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>',
+  smartphone:'<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>',
+  download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>',
+  image:'<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>'
+};
+function ic(n,s){ return `<svg class="i" width="${s||18}" height="${s||18}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||''}</svg>`; }
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function getDeep(o,p){ return p.split('/').filter(Boolean).reduce((a,k)=> a==null?undefined:a[k], o); }
+function setDeep(obj, path, val){
+  const parts = path.split('/').filter(Boolean);
+  let cur = obj;
+  for(let i=0;i<parts.length-1;i++){ if(cur[parts[i]]==null) cur[parts[i]]={}; cur = cur[parts[i]]; }
+  if(val===null) delete cur[parts[parts.length-1]]; else cur[parts[parts.length-1]] = val;
+}
+function removeDeep(obj,path){ setDeep(obj,path,null); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+function lsGet(k,def){ try{ const v = localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
+function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+let USE_FIREBASE = true, db = null;
+let USE_FIREBASE_PAYMENTS = true, paymentsDb = null;
+let dbErrorShown = false;
+try{
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+}catch(e){ USE_FIREBASE = false; }
+try{
+  const pApp = firebase.initializeApp(paymentsFirebaseConfig, "paymentsApp");
+  paymentsDb = pApp.database();
+}catch(e){ USE_FIREBASE_PAYMENTS = false; }
+
+const localListeners = [];
+function refreshLocal(){ localListeners.forEach(fn=>fn()); }
+function reportDbError(err, ctx){
+  console.error('db error', ctx, err && err.message);
+  if(!dbErrorShown && STATE.admin){
+    dbErrorShown = true;
+    toast('تعذر الاتصال بقاعدة البيانات ('+ctx+') — تحقق من إعدادات الصلاحيات','err');
+  }
+}
+function failover(err, ctx){
+  USE_FIREBASE = false;
+  if(STATE.products && Object.keys(STATE.products).length) LOCAL_DB.products = JSON.parse(JSON.stringify(STATE.products));
+  reportDbError(err, ctx);
+}
+function dbListen(path, cb){
+  const local = ()=>{ const fire = ()=> cb(JSON.parse(JSON.stringify(getDeep(LOCAL_DB,path)||{}))); localListeners.push(fire); fire(); };
+  if(USE_FIREBASE){
+    db.ref(path).on('value', s=>cb(s.val()||{}), err=>{ failover(err,'read '+path); local(); });
+  } else local();
+}
+function dbSet(path,val){
+  if(USE_FIREBASE) return db.ref(path).set(val).catch(err=>{ failover(err,'write '+path); setDeep(LOCAL_DB,path,val); refreshLocal(); });
+  setDeep(LOCAL_DB,path,val); refreshLocal(); return Promise.resolve();
+}
+function dbUpdate(updates){
+  if(USE_FIREBASE) return db.ref().update(updates).catch(err=>{ failover(err,'update'); Object.entries(updates).forEach(([p,v])=>setDeep(LOCAL_DB,p,v)); refreshLocal(); });
+  Object.entries(updates).forEach(([p,v])=>setDeep(LOCAL_DB,p,v)); refreshLocal(); return Promise.resolve();
+}
+function dbRemove(path){
+  if(USE_FIREBASE) return db.ref(path).remove().catch(err=>{ failover(err,'delete'); removeDeep(LOCAL_DB,path); refreshLocal(); });
+  removeDeep(LOCAL_DB,path); refreshLocal(); return Promise.resolve();
+}
+function paymentsListen(path, cb){
+  if(USE_FIREBASE_PAYMENTS) paymentsDb.ref(path).on('value', s=>cb(s.val()||{}), err=>{ reportDbError(err,'payments'); cb({}); });
+  else cb(JSON.parse(JSON.stringify(getDeep(LOCAL_DB,path)||{})));
+}
+function paymentsSet(path,val){
+  if(USE_FIREBASE_PAYMENTS) return paymentsDb.ref(path).set(val).catch(err=>{ reportDbError(err,'payments'); setDeep(LOCAL_DB,path,val); });
+  setDeep(LOCAL_DB,path,val); return Promise.resolve();
+}
+function paymentsUpdate(updates){
+  if(USE_FIREBASE_PAYMENTS) return paymentsDb.ref().update(updates).catch(err=>{ reportDbError(err,'payments'); });
+  Object.entries(updates).forEach(([p,v])=>setDeep(LOCAL_DB,p,v)); return Promise.resolve();
+}
+
+let STATE = {
+  products: JSON.parse(JSON.stringify(LOCAL_DB.products)),
+  orders:{}, prescriptions:{}, payments:{}, myOrders:{},
+  cart: lsGet('cart',{}),
+  activeCat:'all', searchTerm:'', sortBy:'default',
+  admin:null, adminView:'overview', ordersFilter:'all'
+};
+let checkout = { pay:'cash', rxImage:null, receiptImage:null, instapayClicked:false };
+let posCart = {}, posPayMethod = 'cash', posPrint = false;
+let modalImage = '';
+
+if(USE_FIREBASE){
+  db.ref('products').once('value').then(s=>{
+    if(!s.exists()) return db.ref('products').set(LOCAL_DB.products);
+  }).catch(err=>reportDbError(err,'products'));
+}
+
+function toast(msg,type=''){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show '+type;
+  clearTimeout(toast._t); toast._t = setTimeout(()=>t.className='toast',2800);
+}
+function fmtMoney(n){ return Number(n||0).toLocaleString('ar-EG')+' ج.م'; }
+function daysUntil(d){
+  if(!d) return 99999;
+  const t = new Date(d); const n = new Date(); n.setHours(0,0,0,0);
+  return Math.ceil((t-n)/86400000);
+}
+function isExpired(p){ return !!p.expiry && daysUntil(p.expiry) < 0; }
+function isSellable(p){ return !isExpired(p); }
+function toEgyptIntl(phone){
+  phone = (phone||'').replace(/\D/g,'');
+  if(phone.startsWith('20')) return phone;
+  if(phone.startsWith('0')) return '2'+phone;
+  return '20'+phone;
+}
+function validPhone(p){ return /^01[0125]\d{8}$/.test((p||'').replace(/\s|-/g,'')); }
+async function sha256(s){
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function compressImage(file,max,q){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onerror = rej;
+    r.onload = ()=>{
+      const im = new Image();
+      im.onerror = rej;
+      im.onload = ()=>{
+        const k = Math.min(1, max/Math.max(im.width,im.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(im.width*k); c.height = Math.round(im.height*k);
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#fff'; ctx.fillRect(0,0,c.width,c.height);
+        ctx.drawImage(im,0,0,c.width,c.height);
+        res(c.toDataURL('image/jpeg',q));
+      };
+      im.src = r.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+function catName(id){ const c = CATEGORIES.find(x=>x.id===id); return c?c.name:id; }
+function catIcon(id){ const c = CATEGORIES.find(x=>x.id===id); return c?c.icon:'pill'; }
+function hueOf(s){ let h=0; for(const c of String(s)) h=(h*31+c.charCodeAt(0))%360; return h; }
+function formOf(p){
+  const n = p.name||'';
+  if(p.category==='devices') return 'device';
+  if(/حقن|انسولين/.test(n)) return 'syringe';
+  if(/بخاخ/.test(n)) return 'inhaler';
+  if(/شراب|نقط|حليب|بروتين|لوشن|غسول|شامبو|مطهر/.test(n)) return 'bottle';
+  if(/كريم|جل|مرهم|صن بلوك|مرطب/.test(n)) return 'tube';
+  if(/حفاض|فرشاة|كمادات/.test(n)) return 'box';
+  return 'blister';
+}
+function drawnVisual(p){
+  const h = hueOf(p.name), a = `hsl(${h} 68% 42%)`, bgc = `hsl(${h} 70% 93%)`;
+  const S = {
+    blister:`<rect x="22" y="30" width="76" height="60" rx="8" fill="#fff" stroke="${a}" stroke-width="3"/>`+[0,1,2].map(i=>[0,1].map(j=>`<ellipse cx="${40+i*20}" cy="${50+j*22}" rx="8" ry="6" fill="${a}" opacity=".85"/>`).join('')).join(''),
+    bottle:`<rect x="46" y="14" width="28" height="14" rx="3" fill="${a}"/><rect x="38" y="28" width="44" height="78" rx="10" fill="#fff" stroke="${a}" stroke-width="3"/><rect x="38" y="52" width="44" height="30" fill="${a}" opacity=".9"/><path d="M52 67h16M60 59v16" stroke="#fff" stroke-width="4" stroke-linecap="round"/>`,
+    tube:`<path d="M34 22h52l-6 66H40z" fill="#fff" stroke="${a}" stroke-width="3"/><rect x="40" y="88" width="40" height="16" rx="3" fill="${a}"/><rect x="37" y="46" width="46" height="20" fill="${a}" opacity=".9"/>`,
+    syringe:`<rect x="30" y="46" width="52" height="24" rx="5" fill="#fff" stroke="${a}" stroke-width="3"/><rect x="82" y="52" width="12" height="12" fill="${a}"/><path d="M94 58h18" stroke="${a}" stroke-width="3"/><rect x="18" y="38" width="6" height="40" rx="2" fill="${a}"/><rect x="24" y="56" width="10" height="4" fill="${a}"/><path d="M44 52v12M56 52v12M68 52v12" stroke="${a}" stroke-width="2"/>`,
+    device:`<rect x="28" y="20" width="64" height="80" rx="12" fill="#fff" stroke="${a}" stroke-width="3"/><rect x="38" y="32" width="44" height="26" rx="4" fill="${a}"/><circle cx="60" cy="80" r="10" fill="${a}" opacity=".85"/>`,
+    inhaler:`<rect x="44" y="18" width="32" height="52" rx="6" fill="#fff" stroke="${a}" stroke-width="3"/><path d="M44 70h32v18a8 8 0 0 1-8 8H52a8 8 0 0 1-8-8z" fill="${a}"/><rect x="52" y="30" width="16" height="22" rx="3" fill="${a}" opacity=".35"/>`,
+    box:`<rect x="26" y="34" width="68" height="56" rx="6" fill="#fff" stroke="${a}" stroke-width="3"/><path d="M60 48v28M46 62h28" stroke="${a}" stroke-width="7" stroke-linecap="round"/>`
+  };
+  return `<svg viewBox="0 0 120 120" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="120" fill="${bgc}"/><circle cx="100" cy="18" r="30" fill="#fff" opacity=".35"/>${S[formOf(p)]}</svg>`;
+}
+function imgKey(s){
+  return String(s).toLowerCase().replace(/[\s_\-.+()،,]/g,'').replace(/[\u064B-\u0652]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');
+}
+let IMAGE_INDEX = null;
+function buildImageIndex(){
+  IMAGE_INDEX = {};
+  IMAGE_FILES.forEach(f=>{
+    let base = f;
+    for(let i=0;i<3;i++) base = base.replace(/\.?(webp|jpe?g|png|avif)$/i,'');
+    base.split(/[،,]/).map(imgKey).filter(Boolean).forEach(k=>{ if(!IMAGE_INDEX[k]) IMAGE_INDEX[k] = f; });
+  });
+  Object.entries(IMAGE_ALIASES).forEach(([name,f])=>{ IMAGE_INDEX[imgKey(name)] = f; });
+}
+function localImageFor(name){
+  if(!IMAGE_INDEX) buildImageIndex();
+  const f = IMAGE_INDEX[imgKey(name||'')];
+  return f ? IMAGES_FOLDER+encodeURIComponent(f) : '';
+}
+function productVisual(p){
+  const drawn = drawnVisual(p);
+  let src = '';
+  if(p.image && /^(data:image\/|https:\/\/|images\/)/.test(p.image)) src = p.image;
+  else src = localImageFor(p.name);
+  if(!src) return drawn;
+  return `<span class="vis">${drawn}<img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" onerror="this.remove()"></span>`;
+}
+const STAR_SVG = `<svg viewBox="0 0 24 24" fill="none"><path d="M12 2.5l2.8 6.1 6.7.7-5 4.5 1.4 6.6L12 17l-5.9 3.4 1.4-6.6-5-4.5 6.7-.7z" fill="#F2A93B"/></svg>`;
+
+function cartCount(){ return Object.values(STATE.cart).reduce((s,q)=>s+q,0); }
+function cartSubtotal(){
+  let t=0;
+  for(const [id,q] of Object.entries(STATE.cart)){ const p = STATE.products[id]; if(p) t += p.price*q; }
+  return t;
+}
+function cartDelivery(){ const s = cartSubtotal(); return s>0 && s<FREE_DELIVERY_FROM ? DELIVERY_FEE : 0; }
+function cartTotal(){ return cartSubtotal()+cartDelivery(); }
+function saveCart(){ lsSet('cart', STATE.cart); }
+
+window.addEventListener('hashchange', render);
+function route(){ return location.hash.replace('#/','') || 'store'; }
+function render(){
+  if(route()==='admin'){ renderAdmin(); } else { renderStore(); }
+}
+
+function cardHtml(p){
+  const inCart = STATE.cart[p.id]||0, out = (p.stock||0)<=0;
+  const disc = p.oldPrice && p.oldPrice>p.price ? Math.round((1-p.price/p.oldPrice)*100) : 0;
+  const d = daysUntil(p.expiry), soon = d>=0 && d<=EXPIRY_WARNING_DAYS;
+  return `<article class="card">
+    <div class="pic" onclick="openDetail('${p.id}')">${productVisual(p)}
+      <div class="badges">${disc?`<span class="b b-sale">-${disc}%</span>`:''}${p.rx?'<span class="b b-rx">روشتة</span>':''}${soon?'<span class="b b-warn">قرب الانتهاء</span>':''}</div>
+      ${out?'<div class="soldout">نفذت الكمية</div>':''}
+    </div>
+    <div class="cat-tag">${esc(catName(p.category))}</div>
+    <h4>${esc(p.name)}</h4>
+    <div class="price-row">
+      <div><span class="price num">${fmtMoney(p.price)}</span>${disc?`<s class="old num">${fmtMoney(p.oldPrice)}</s>`:''}</div>
+      ${inCart?`<div class="stepper"><button onclick="changeQty('${p.id}',-1)">−</button><span class="num">${inCart}</span><button onclick="changeQty('${p.id}',1)">+</button></div>`:`<button class="add-btn" ${out?'disabled':''} onclick="addToCart('${p.id}')">+</button>`}
+    </div>
+  </article>`;
+}
+function visibleProducts(){
+  let arr = Object.entries(STATE.products||{}).map(([id,p])=>({id,...p})).filter(isSellable);
+  return arr;
+}
+function renderGrid(){
+  const el = document.getElementById('gridBody'); if(!el) return;
+  let arr = visibleProducts().filter(p=>{
+    const mc = STATE.activeCat==='all' || p.category===STATE.activeCat;
+    const ms = !STATE.searchTerm || (p.name||'').includes(STATE.searchTerm.trim());
+    return mc && ms;
+  });
+  if(STATE.sortBy==='low') arr.sort((a,b)=>a.price-b.price);
+  else if(STATE.sortBy==='high') arr.sort((a,b)=>b.price-a.price);
+  else if(STATE.sortBy==='sale') arr.sort((a,b)=>((b.oldPrice>b.price)?1:0)-((a.oldPrice>a.price)?1:0));
+  el.innerHTML = arr.length ? arr.map(cardHtml).join('') : `<div class="empty-state" style="grid-column:1/-1"><div class="ic">${ic('search',44)}</div>مفيش منتجات مطابقة لبحثك</div>`;
+}
+function renderCats(){
+  const el = document.getElementById('catsBar'); if(!el) return;
+  const all = visibleProducts();
+  el.innerHTML = `<div class="chip ${STATE.activeCat==='all'?'active':''}" onclick="setCat('all')">الكل <small>${all.length}</small></div>`+
+    CATEGORIES.map(c=>`<div class="chip ${STATE.activeCat===c.id?'active':''}" onclick="setCat('${c.id}')">${ic(c.icon,16)} ${c.name} <small>${all.filter(p=>p.category===c.id).length}</small></div>`).join('');
+}
+function setCat(id){ STATE.activeCat = id; renderCats(); renderGrid(); }
+function setSort(v){ STATE.sortBy = v; renderGrid(); }
+function onSearch(v){ STATE.searchTerm = v; renderGrid(); }
+function updateBadge(){
+  const b = document.getElementById('cartBadge'); if(!b) return;
+  const n = cartCount(); b.textContent = n; b.classList.toggle('hidden', n===0);
+}
+function refreshStoreData(){
+  renderCats(); renderGrid(); renderCart(); updateBadge();
+  const st = document.getElementById('statProducts'); if(st) st.textContent = visibleProducts().length;
+}
+
+function renderStore(){
+  if(!document.getElementById('storeShell')){
+    document.getElementById('app').innerHTML = `
+    <div id="storeShell">
+
+    <div class="topbar"><div class="topbar-inner">
+      <div class="brand"><div class="mark">${STAR_SVG}</div>${esc(PHARMACY_NAME)}</div>
+      <div class="search-wrap"><input id="storeSearchInput" placeholder="دوّر على دوا أو منتج..." value="${esc(STATE.searchTerm)}" oninput="onSearch(this.value)"><span class="ic">${ic('search',18)}</span></div>
+      <div class="top-actions">
+        <button class="icon-btn" onclick="openTrack()">${ic('package',18)} <span>طلباتي</span></button>
+        <button class="icon-btn" onclick="openCart()" aria-label="السلة">${ic('cart',20)}<span class="badge hidden" id="cartBadge">0</span></button>
+        <a class="admin-link" href="#/admin">لوحة التحكم</a>
+      </div>
+    </div></div>
+
+    <section class="hero"><div class="hero-card">
+      <div>
+        <h1>دواك وكل احتياجاتك <em>لحد باب بيتك</em></h1>
+        <p>أدوية أصلية، عناية وجمال، مستلزمات أطفال وأجهزة طبية — اطلب أونلاين واستلم بسرعة، وتابع طلبك لحظة بلحظة.</p>
+        <div class="hero-cta">
+          <a class="btn-gold" href="#products" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'});return false;">تصفّح المنتجات</a>
+          <a class="btn-ghost" href="https://wa.me/${toEgyptIntl(SUPPORT_WHATSAPP)}" target="_blank" rel="noopener">${ic('message',18)} اسأل الصيدلي</a>
+        </div>
+      </div>
+      <div class="hero-art"><svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="100" fill="rgba(255,255,255,.1)"/><rect x="62" y="48" width="96" height="124" rx="18" fill="#fff"/><path d="M110 76v52M84 102h52" stroke="#14386B" stroke-width="14" stroke-linecap="round"/><path d="M110 138l5 11 12 1.2-9 8 2.6 12-10.6-6-10.6 6 2.6-12-9-8 12-1.2z" fill="#F2A93B"/></svg></div>
+    </div></section>
+
+    <section class="trust">
+      <div><span class="ti">${ic('truck',22)}</span><span><b>توصيل سريع</b>مجاني فوق ${fmtMoney(FREE_DELIVERY_FROM)}</span></div>
+      <div><span class="ti">${ic('shield',22)}</span><span><b>أدوية أصلية</b>من مصادر موثوقة</span></div>
+      <div><span class="ti">${ic('file',22)}</span><span><b>روشتة أونلاين</b>ارفع صورة الروشتة بسهولة</span></div>
+      <div><span class="ti">${ic('message',22)}</span><span><b>دعم واتساب</b>صيدلي جاهز يرد عليك</span></div>
+    </section>
+
+    <div class="section-head" id="products">
+      <h2>المنتجات <span class="num" style="font-size:14px;color:var(--muted)">(<span id="statProducts">0</span>)</span></h2>
+      <select class="sort-sel" onchange="setSort(this.value)">
+        <option value="default">الترتيب الافتراضي</option>
+        <option value="low">الأرخص أولاً</option>
+        <option value="high">الأغلى أولاً</option>
+        <option value="sale">العروض أولاً</option>
+      </select>
+    </div>
+    <div class="cats" id="catsBar"></div>
+    <div class="grid-wrap"><div class="grid" id="gridBody"></div></div>
+
+    <div class="site-footer">
+      <div class="row">
+        <a class="footer-whatsapp" href="https://wa.me/${toEgyptIntl(SUPPORT_WHATSAPP)}" target="_blank" rel="noopener">${ic('message',18)} تواصل معانا على واتساب</a>
+      </div>
+      <div style="font-weight:800;font-family:'Cairo';margin-bottom:4px">${esc(PHARMACY_NAME)}</div>
+      <div class="footer-copy">© 2026 Powered by Mohamed Yousry</div>
+    </div>
+
+    <a class="wa-float" href="https://wa.me/${toEgyptIntl(SUPPORT_WHATSAPP)}" target="_blank" rel="noopener" aria-label="واتساب">${ic('message',28)}</a>
+
+    <div class="drawer-backdrop" id="cartBackdrop" onclick="closeCart()"></div>
+    <div class="drawer" id="cartDrawer">
+      <div class="drawer-head"><h3>سلة المشتريات</h3><button onclick="closeCart()" style="display:flex">${ic('x',20)}</button></div>
+      <div class="drawer-body" id="cartBody"></div>
+      <div class="drawer-foot" id="cartFoot"></div>
+    </div>
+
+    <div class="modal-backdrop" id="checkoutModal"><div class="modal">
+      <span class="close-x" onclick="closeCheckout()">${ic('x',16)}</span>
+      <h3>بيانات الطلب</h3>
+      <div class="field"><label>الاسم بالكامل</label><input id="ckName" placeholder="مثال: أحمد محمد" autocomplete="name"></div>
+      <div class="field"><label>رقم الموبايل</label><input id="ckPhone" placeholder="01xxxxxxxxx" inputmode="tel" autocomplete="tel"></div>
+      <div class="field"><label>العنوان / نقطة التسليم</label><input id="ckAddr" placeholder="الحي، الشارع، أقرب علامة" autocomplete="street-address"></div>
+      <div class="field hidden" id="rxField"><label>صورة الروشتة (مطلوبة لبعض الأصناف)</label><input type="file" id="ckRx" accept="image/*" onchange="handleRxUpload(event)"><div id="rxState" style="font-size:12px;color:var(--muted);margin-top:6px"></div></div>
+      <div class="field"><label>طريقة الدفع</label>
+        <div class="pay-options">
+          <div class="pay-opt active" id="payCash" onclick="setPay('cash')">${ic('banknote',18)} كاش عند الاستلام</div>
+          <div class="pay-opt" id="payInsta" onclick="setPay('instapay')">${ic('landmark',18)} إنستاباي</div>
+        </div>
+      </div>
+      <div class="note-box hidden" id="instaBox">
+        <label style="font-weight:700;font-size:13px">ادفع المبلغ <span id="instaAmount" class="num"></span> عبر إنستاباي</label>
+        <div class="hint">هيفتحلك رابط إنستاباي — أتمم الدفع وارجع ارفع صورة الإيصال.</div>
+        <button type="button" class="btn-primary" style="margin-bottom:10px" onclick="openInstapay()">${ic('landmark',18)} افتح صفحة الدفع</button>
+        <label style="font-weight:700;font-size:13px">صورة إيصال الدفع</label>
+        <input type="file" id="ckReceiptImg" accept="image/*" onchange="handleReceiptUpload(event)" style="margin-top:6px;width:100%">
+        <div id="receiptState" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
+      </div>
+      <div id="ckSummary"></div>
+      <button class="btn-accent" id="submitBtn" onclick="submitOrder()">تأكيد الطلب عبر واتساب</button>
+    </div></div>
+
+    <div class="modal-backdrop" id="trackModal"><div class="modal">
+      <span class="close-x" onclick="closeModal('trackModal')">${ic('x',16)}</span>
+      <h3>طلباتي</h3><div id="trackBody"></div>
+    </div></div>
+
+    <div class="modal-backdrop" id="detailModal"><div class="modal">
+      <span class="close-x" onclick="closeModal('detailModal')">${ic('x',16)}</span>
+      <div id="detailBody"></div>
+    </div></div>
+    </div>`;
+  }
+  refreshStoreData();
+}
+
+function openDetail(id){
+  const p = STATE.products[id]; if(!p) return;
+  p.id = id;
+  const out = (p.stock||0)<=0;
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-pic">${productVisual(p)}</div>
+    <div style="font-size:12px;color:var(--muted)">${esc(catName(p.category))}</div>
+    <h3 style="margin:2px 0 8px">${esc(p.name)}</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      ${p.rx?'<span class="pill warn">يتطلب روشتة</span>':'<span class="pill ok">بدون روشتة</span>'}
+      ${out?'<span class="pill danger">نفذت الكمية</span>':(p.stock<=LOW_STOCK_THRESHOLD?'<span class="pill danger">كمية محدودة</span>':'<span class="pill ok">متوفر</span>')}
+    </div>
+    <div class="total-row"><span>السعر</span><span class="num">${fmtMoney(p.price)}</span></div>
+    <button class="btn-primary" ${out?'disabled':''} onclick="addToCart('${id}');closeModal('detailModal')">أضف للسلة</button>`;
+  document.getElementById('detailModal').classList.add('show');
+}
+function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+
+function addToCart(id){
+  const p = STATE.products[id];
+  if(!p || !isSellable(p)){ toast('المنتج ده مش متاح حالياً','err'); return; }
+  if((p.stock||0) <= (STATE.cart[id]||0)){ toast('الكمية المتاحة خلصت','err'); return; }
+  STATE.cart[id] = (STATE.cart[id]||0)+1;
+  saveCart(); toast('اتضاف للسلة','ok'); refreshStoreData();
+}
+function changeQty(id,delta){
+  const p = STATE.products[id];
+  const q = (STATE.cart[id]||0)+delta;
+  if(q<=0) delete STATE.cart[id];
+  else if(p && q>(p.stock||0)){ toast('مفيش كمية كفاية','err'); return; }
+  else STATE.cart[id] = q;
+  saveCart(); refreshStoreData();
+}
+function renderCart(){
+  const body = document.getElementById('cartBody'), foot = document.getElementById('cartFoot');
+  if(!body) return;
+  Object.keys(STATE.cart).forEach(id=>{ if(STATE.products[id] && !isSellable(STATE.products[id])) delete STATE.cart[id]; });
+  const items = Object.entries(STATE.cart).filter(([id])=>STATE.products[id]);
+  body.innerHTML = items.length ? items.map(([id,q])=>{
+    const p = {id,...STATE.products[id]};
+    return `<div class="cart-item"><div class="thumb">${productVisual(p)}</div><div class="info"><div class="nm">${esc(p.name)}</div><div style="font-size:13px;color:var(--muted)" class="num">${fmtMoney(p.price)}</div></div>
+      <div class="stepper"><button onclick="changeQty('${id}',-1)">−</button><span class="num">${q}</span><button onclick="changeQty('${id}',1)">+</button></div></div>`;
+  }).join('') : `<div class="empty-state"><div class="ic">${ic('cart',44)}</div>السلة فاضية</div>`;
+  const sub = cartSubtotal(), fee = cartDelivery();
+  const left = Math.max(0, FREE_DELIVERY_FROM-sub);
+  foot.innerHTML = items.length ? `
+    <div class="free-bar">${left>0?`ضيف ${fmtMoney(left)} كمان والتوصيل يبقى مجاني ${ic('truck',16)}`:`التوصيل مجاني على طلبك ${ic('check',16)}`}
+      <div class="track"><div class="fill" style="width:${Math.min(100,sub/FREE_DELIVERY_FROM*100)}%"></div></div></div>
+    <div class="sum-row"><span>المنتجات</span><span class="num">${fmtMoney(sub)}</span></div>
+    <div class="sum-row"><span>التوصيل</span><span class="num">${fee?fmtMoney(fee):'مجاني'}</span></div>
+    <div class="total-row"><span>الإجمالي</span><span class="num">${fmtMoney(sub+fee)}</span></div>
+    <button class="btn-primary" onclick="openCheckout()">إتمام الطلب</button>` : '';
+}
+function openCart(){ renderCart(); document.getElementById('cartDrawer').classList.add('show'); document.getElementById('cartBackdrop').classList.add('show'); }
+function closeCart(){ document.getElementById('cartDrawer').classList.remove('show'); document.getElementById('cartBackdrop').classList.remove('show'); }
+
+function needsRx(){ return Object.keys(STATE.cart).some(id=>STATE.products[id] && STATE.products[id].rx); }
+function renderCheckoutSummary(){
+  const sub = cartSubtotal(), fee = cartDelivery();
+  document.getElementById('ckSummary').innerHTML = `
+    <div class="sum-row"><span>المنتجات</span><span class="num">${fmtMoney(sub)}</span></div>
+    <div class="sum-row"><span>التوصيل</span><span class="num">${fee?fmtMoney(fee):'مجاني'}</span></div>
+    <div class="total-row"><span>الإجمالي</span><span class="num">${fmtMoney(sub+fee)}</span></div>`;
+  document.getElementById('instaAmount').textContent = fmtMoney(sub+fee);
+  document.getElementById('rxField').classList.toggle('hidden', !needsRx());
+}
+function openCheckout(){
+  if(!Object.keys(STATE.cart).length) return;
+  closeCart(); renderCheckoutSummary();
+  const saved = lsGet('customer',{});
+  ['Name','Phone','Addr'].forEach(k=>{ const el = document.getElementById('ck'+k); if(el && !el.value) el.value = saved[k]||''; });
+  document.getElementById('checkoutModal').classList.add('show');
+}
+function closeCheckout(){ closeModal('checkoutModal'); }
+function setPay(m){
+  checkout.pay = m;
+  document.getElementById('payCash').classList.toggle('active', m==='cash');
+  document.getElementById('payInsta').classList.toggle('active', m==='instapay');
+  document.getElementById('instaBox').classList.toggle('hidden', m!=='instapay');
+  document.getElementById('submitBtn').textContent = m==='instapay' ? 'تم الدفع، تأكيد الطلب عبر واتساب' : 'تأكيد الطلب عبر واتساب';
+}
+function openInstapay(){ checkout.instapayClicked = true; window.open(INSTAPAY_LINK,'_blank','noopener'); }
+async function handleReceiptUpload(e){
+  const f = e.target.files[0]; if(!f) return;
+  try{ checkout.receiptImage = await compressImage(f,1000,.72); document.getElementById('receiptState').innerHTML = ic('checkcircle',15)+' تم إرفاق صورة الإيصال'; }
+  catch(err){ toast('تعذر قراءة الصورة','err'); }
+}
+async function handleRxUpload(e){
+  const f = e.target.files[0]; if(!f) return;
+  try{ checkout.rxImage = await compressImage(f,1200,.75); document.getElementById('rxState').innerHTML = ic('checkcircle',15)+' تم إرفاق صورة الروشتة'; }
+  catch(err){ toast('تعذر قراءة الصورة','err'); }
+}
+function submitOrder(){
+  const name = document.getElementById('ckName').value.trim();
+  const phone = document.getElementById('ckPhone').value.trim();
+  const addr = document.getElementById('ckAddr').value.trim();
+  if(!name || !phone || !addr){ toast('من فضلك اكمل بيانات الطلب','err'); return; }
+  if(!validPhone(phone)){ toast('رقم الموبايل غير صحيح','err'); return; }
+  if(needsRx() && !checkout.rxImage){ toast('لازم ترفع صورة الروشتة','err'); return; }
+  if(checkout.pay==='instapay' && !checkout.instapayClicked){ toast('اضغط "افتح صفحة الدفع" وأتمم الدفع الأول','err'); return; }
+  if(checkout.pay==='instapay' && !checkout.receiptImage){ toast('لازم ترفع صورة إيصال الدفع','err'); return; }
+  const items = Object.entries(STATE.cart).filter(([id])=>STATE.products[id]).map(([id,qty])=>({ id, name:STATE.products[id].name, price:STATE.products[id].price, qty }));
+  if(!items.length) return;
+  const subtotal = cartSubtotal(), fee = cartDelivery(), total = subtotal+fee;
+  const orderId = uid();
+  const win = window.open('','_blank');
+  const updates = {};
+  updates['orders/'+orderId] = { customerName:name, phone, address:addr, items, subtotal, deliveryFee:fee, total, paymentMethod:checkout.pay, status:'pending', createdAt:Date.now() };
+  if(checkout.rxImage) updates['prescriptions/'+orderId] = { image:checkout.rxImage, customerName:name, createdAt:Date.now() };
+  const paySave = checkout.receiptImage ? paymentsSet('payments/'+orderId, { orderId, customerName:name, phone, amount:total, receiptImage:checkout.receiptImage, createdAt:Date.now() }) : Promise.resolve();
+  const payLabel = checkout.pay==='cash' ? 'كاش عند الاستلام' : 'إنستاباي (تم الدفع)';
+  const msg = `طلب جديد من ${PHARMACY_NAME}\nالاسم: ${name}\nالتليفون: ${phone}\nالعنوان: ${addr}\n\nالمنتجات:\n${items.map(i=>`- ${i.name} × ${i.qty} = ${fmtMoney(i.price*i.qty)}`).join('\n')}\n\nالتوصيل: ${fee?fmtMoney(fee):'مجاني'}\nالإجمالي: ${fmtMoney(total)}\nطريقة الدفع: ${payLabel}${checkout.receiptImage?'\nصورة إيصال الدفع مرفوعة على لوحة التحكم':''}\nرقم الطلب: ${orderId}`;
+  Promise.all([dbUpdate(updates), paySave]).then(()=>{
+    const url = `https://wa.me/${toEgyptIntl(PHARMACY_PHONE)}?text=${encodeURIComponent(msg)}`;
+    if(win) win.location.href = url; else location.href = url;
+    const mine = lsGet('myOrders',[]); mine.unshift(orderId); lsSet('myOrders', mine.slice(0,15));
+    lsSet('customer',{Name:name,Phone:phone,Addr:addr});
+    watchOrder(orderId);
+    STATE.cart = {}; saveCart();
+    checkout = { pay:'cash', rxImage:null, receiptImage:null, instapayClicked:false };
+    setPay('cash'); document.getElementById('rxState').textContent=''; document.getElementById('receiptState').textContent='';
+    closeCheckout(); toast('تم إرسال طلبك بنجاح','ok'); refreshStoreData();
+  }).catch(()=>{ if(win) win.close(); toast('حصل خطأ، حاول تاني','err'); });
+}
+
+function watchOrder(id){
+  const apply = o=>{ if(o && o.customerName){ STATE.myOrders[id] = o; } else delete STATE.myOrders[id]; if(document.getElementById('trackModal') && document.getElementById('trackModal').classList.contains('show')) renderTrack(); };
+  if(USE_FIREBASE) db.ref('orders/'+id).on('value', s=>apply(s.val()), ()=>{});
+  else { const fire = ()=>apply(getDeep(LOCAL_DB,'orders/'+id)); localListeners.push(fire); fire(); }
+}
+function watchMyOrders(){ lsGet('myOrders',[]).forEach(watchOrder); }
+function renderTrack(){
+  const ids = lsGet('myOrders',[]).filter(id=>STATE.myOrders[id]);
+  const stepOf = s=> s==='pending'?1 : s==='preparing'?2 : s==='completed'?3 : 0;
+  const label = {pending:'قيد المراجعة',preparing:'جاري التجهيز',completed:'تم التسليم',cancelled:'ملغي'};
+  document.getElementById('trackBody').innerHTML = ids.length ? ids.map(id=>{
+    const o = STATE.myOrders[id], st = stepOf(o.status);
+    return `<div class="track-card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b class="num" style="font-size:12px">#${esc(id)}</b>${statusPill(o.status)}</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px">${(o.items||[]).map(i=>esc(i.name)+' × '+i.qty).join('، ')}</div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-weight:700"><span>${label[o.status]||esc(o.status)}</span><span class="num">${fmtMoney(o.total)}</span></div>
+      <div class="steps ${o.status==='cancelled'?'bad':''}">${o.status==='cancelled'?'<i class="on"></i><i class="on"></i><i class="on"></i>':[1,2,3].map(n=>`<i class="${st>=n?'on':''}"></i>`).join('')}</div></div>`;
+  }).join('') : `<div class="empty-state"><div class="ic">${ic('package',44)}</div>مفيش طلبات على الجهاز ده لسه</div>`;
+}
+function openTrack(){ renderTrack(); document.getElementById('trackModal').classList.add('show'); }
+
+function statusPill(s){
+  const map = { pending:['pending','قيد الانتظار'], completed:['ok','مكتمل'], cancelled:['danger','ملغي'], preparing:['warn','قيد التجهيز'] };
+  const [cls,label] = map[s] || ['pending', s];
+  return `<span class="pill ${cls}">${esc(label)}</span>`;
+}
+
+let adminListening = false, lastPending = null;
+function startAdminListeners(){
+  if(adminListening) return; adminListening = true;
+  dbListen('orders', v=>{
+    STATE.orders = v||{};
+    const pend = Object.values(STATE.orders).filter(o=>o.status==='pending').length;
+    if(lastPending!==null && pend>lastPending){
+      toast('وصل طلب جديد','ok');
+      if('Notification' in window && Notification.permission==='granted') new Notification(PHARMACY_NAME, {body:'وصل طلب جديد'});
+    }
+    lastPending = pend;
+    autoCleanupIfNeeded(); refreshAdmin();
+  });
+  dbListen('prescriptions', v=>{ STATE.prescriptions = v||{}; autoCleanupIfNeeded(); refreshAdmin(); });
+  paymentsListen('payments', v=>{ STATE.payments = v||{}; refreshAdmin(); });
+}
+function refreshAdmin(){
+  if(route()!=='admin' || !STATE.admin) return;
+  const ae = document.activeElement;
+  const main = document.getElementById('adminMain');
+  if(main && ae && main.contains(ae) && /INPUT|SELECT|TEXTAREA/.test(ae.tagName)) return;
+  if(document.querySelector('#productModal.show')) { updateNavCounts(); return; }
+  renderAdmin();
+}
+function updateNavCounts(){
+  const el = document.getElementById('navPending'); if(!el) return;
+  const n = Object.values(STATE.orders||{}).filter(o=>o.status==='pending').length;
+  el.textContent = n; el.classList.toggle('hidden', n===0);
+}
+
+dbListen('products', v=>{
+  if(v && Object.keys(v).length) STATE.products = v;
+  if(route()==='admin'){ if(STATE.admin) refreshAdmin(); } else renderStore();
+});
+
+function estimateStorageMB(){
+  let bytes = 0;
+  Object.values(STATE.prescriptions||{}).forEach(rx=>{ if(rx && rx.image) bytes += rx.image.length*.75; });
+  bytes += JSON.stringify(STATE.orders||{}).length + JSON.stringify(STATE.products||{}).length;
+  return bytes/(1024*1024);
+}
+function cleanupOldReceiptData(silent){
+  const cutoff = Date.now()-OLD_ORDER_DAYS_FOR_CLEANUP*86400000;
+  const updates = {}; let freed = 0;
+  Object.entries(STATE.orders||{}).forEach(([id,o])=>{
+    if((o.status==='completed'||o.status==='cancelled') && o.createdAt<cutoff && STATE.prescriptions[id] && STATE.prescriptions[id].image){
+      updates['prescriptions/'+id+'/image'] = null; freed++;
+    }
+  });
+  if(!freed){ if(!silent) toast('مفيش صور روشتات قديمة للتنظيف','ok'); return; }
+  dbUpdate(updates).then(()=>{ toast(`اتنضفت ${freed} صورة روشتة قديمة`,'ok'); });
+}
+function autoCleanupIfNeeded(){ if(estimateStorageMB()>=STORAGE_AUTOCLEAN_MB) cleanupOldReceiptData(true); }
+function storageLevel(){ const u = estimateStorageMB(); return u>=STORAGE_AUTOCLEAN_MB?'danger':u>=STORAGE_WARNING_MB?'warn':'ok'; }
+function storageStatusHtml(){
+  const used = estimateStorageMB(), pct = Math.min(100,used/STORAGE_FREE_LIMIT_MB*100), lvl = storageLevel();
+  const color = lvl==='danger'?'#D9435A':lvl==='warn'?'#F2A93B':'#1FA37A';
+  const note = lvl==='danger'?'المساحة قربت تخلص — التنظيف التلقائي هيمسح صور الروشتات القديمة.':lvl==='warn'?'المساحة بدأت تقرب من الحد المجاني.':'المساحة المستخدمة لسه بعيدة عن الحد المجاني.';
+  return `<div class="panel"><div class="panel-head"><h3>${ic('database',18)} مساحة التخزين</h3><button class="mini-btn primary" onclick="cleanupOldReceiptData(false)">${ic('eraser',15)} نظّف دلوقتي</button></div>
+    <div style="background:#eef1f7;border-radius:8px;overflow:hidden;height:10px;margin:8px 0"><div style="width:${pct}%;background:${color};height:100%"></div></div>
+    <div style="font-size:13px;color:var(--muted)">مستخدم تقريباً <span class="num">${used.toFixed(1)}</span> ميجا من <span class="num">${STORAGE_FREE_LIMIT_MB}</span>. ${note}</div></div>`;
+}
+function purgeOldOrders(days){
+  if(!confirm(`مسح كل الطلبات (المكتملة/الملغاة) الأقدم من ${days} يوم نهائياً؟`)) return;
+  const cutoff = Date.now()-days*86400000, updates = {}; let n = 0;
+  Object.entries(STATE.orders||{}).forEach(([id,o])=>{
+    if((o.status==='completed'||o.status==='cancelled') && o.createdAt<cutoff){ updates['orders/'+id]=null; if(STATE.prescriptions[id]) updates['prescriptions/'+id]=null; n++; }
+  });
+  if(!n){ toast('مفيش طلبات قديمة بالمواصفات دي','ok'); return; }
+  dbUpdate(updates).then(()=>toast(`تم حذف ${n} طلب`,'ok'));
+}
+function purgeAllOrders(){
+  if(!confirm('هيتم حذف كل الطلبات والروشتات نهائياً. متأكد؟')) return;
+  if(!confirm('تأكيد أخير: مفيش رجوع بعد كده. تكمل؟')) return;
+  dbSet('orders',{}).then(()=>dbSet('prescriptions',{})).then(()=>toast('تم تفريغ الطلبات والروشتات','ok'));
+}
+function purgeOldPayments(days){
+  if(!confirm(`مسح كل الإيصالات الأقدم من ${days} يوم نهائياً؟`)) return;
+  const cutoff = Date.now()-days*86400000, updates = {}; let n = 0;
+  Object.entries(STATE.payments||{}).forEach(([id,p])=>{ if(p.createdAt<cutoff){ updates['payments/'+id]=null; n++; } });
+  if(!n){ toast('مفيش إيصالات قديمة','ok'); return; }
+  paymentsUpdate(updates).then(()=>toast(`تم حذف ${n} إيصال`,'ok'));
+}
+function purgeAllPayments(){
+  if(!confirm('هيتم حذف كل إيصالات الدفع نهائياً. متأكد؟')) return;
+  if(!confirm('تأكيد أخير: مفيش رجوع بعد كده. تكمل؟')) return;
+  paymentsSet('payments',{}).then(()=>toast('تم تفريغ الإيصالات','ok'));
+}
+function viewDataManagement(){
+  const oa = Object.values(STATE.orders||{}), pa = Object.values(STATE.payments||{});
+  const cut = Date.now()-30*86400000;
+  return `<div class="admin-topline"><h2>${ic('trash',24)} إدارة البيانات</h2></div>${storageStatusHtml()}
+    <div class="panel"><div class="panel-head"><h3>${ic('truck',18)} الطلبات</h3></div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px">إجمالي الطلبات: ${oa.length} — منهم ${oa.filter(o=>(o.status==='completed'||o.status==='cancelled')&&o.createdAt<cut).length} مكتمل/ملغي أقدم من 30 يوم.</div>
+      <button class="mini-btn primary" onclick="purgeOldOrders(30)">${ic('eraser',15)} أقدم من 30 يوم</button>
+      <button class="mini-btn primary" onclick="purgeOldOrders(90)">${ic('eraser',15)} أقدم من 90 يوم</button>
+      <button class="mini-btn danger" onclick="purgeAllOrders()">${ic('trash',15)} مسح الكل</button></div>
+    <div class="panel"><div class="panel-head"><h3>${ic('landmark',18)} إيصالات الدفع</h3></div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px">إجمالي الإيصالات: ${pa.length} — منهم ${pa.filter(p=>p.createdAt<cut).length} أقدم من 30 يوم.</div>
+      <button class="mini-btn primary" onclick="purgeOldPayments(30)">${ic('eraser',15)} أقدم من 30 يوم</button>
+      <button class="mini-btn danger" onclick="purgeAllPayments()">${ic('trash',15)} مسح الكل</button></div>
+    <div style="font-size:12px;color:var(--muted)">${ic('alert',14)} الحذف نهائي ومفيش استرجاع. استخدمه بس لو متأكد إنك مش محتاج البيانات دي (مثلاً لأغراض ضريبية أو نزاع مع عميل).</div>`;
+}
+
+function navItem(id,icn,label,extra){
+  return `<div class="nav-item ${STATE.adminView===id?'active':''}" onclick="STATE.adminView='${id}';renderAdmin()"><span class="ic">${ic(icn,18)}</span>${label}${extra||''}</div>`;
+}
+function renderAdmin(){
+  if(!STATE.admin){ renderLogin(); return; }
+  startAdminListeners();
+  if(!document.getElementById('adminMain')){
+    document.getElementById('app').innerHTML = `
+    <div class="admin-shell">
+      <div class="sidebar" id="sidebar"></div>
+      <div class="admin-main" id="adminMain"></div>
+    </div>
+    <div class="admin-mobile-copy">© 2026 Powered by Mohamed Yousry</div>
+    ${productModalHtml()}`;
+  }
+  const pend = Object.values(STATE.orders||{}).filter(o=>o.status==='pending').length;
+  document.getElementById('sidebar').innerHTML = `
+    <div class="brand"><div class="mark">${STAR_SVG}</div>${esc(PHARMACY_NAME)}</div>
+    ${navItem('overview','dashboard','نظرة عامة')}
+    ${navItem('pos','receipt','نقطة البيع')}
+    ${navItem('inventory','package','المخزون')}
+    ${navItem('orders','truck','الطلبات',`<span class="cnt hidden" id="navPending">${pend}</span>`)}
+    ${navItem('prescriptions','file','الروشتات')}
+    ${navItem('reports','trending','التقارير')}
+    ${navItem('data','database','إدارة البيانات')}
+    <div class="logout" onclick="adminLogout()">${ic('logout',16)} تسجيل الخروج</div>
+    <div class="sidebar-copy">© 2026 Powered by Mohamed Yousry</div>`;
+  updateNavCounts();
+  const v = STATE.adminView, main = document.getElementById('adminMain');
+  const banner = storageLevel()!=='ok' ? `<div class="panel" style="background:var(--accent-soft);border-color:#f0d29b;font-size:13px">${ic('alert',16)} مساحة التخزين بدأت تقرب من الحد المجاني — <a href="javascript:void(0)" style="text-decoration:underline;font-weight:700" onclick="STATE.adminView='data';renderAdmin()">افتح إدارة البيانات</a></div>` : '';
+  const views = { overview:viewOverview, pos:viewPOS, inventory:viewInventory, orders:viewOrders, prescriptions:viewPrescriptions, reports:viewReports, data:viewDataManagement };
+  main.innerHTML = (v==='data'?'':banner) + (views[v]||viewOverview)();
+  if('Notification' in window && Notification.permission==='default') Notification.requestPermission();
+}
+function renderLogin(){
+  document.getElementById('app').innerHTML = `
+  <div class="login-wrap"><div class="login-card">
+    <div class="mark">${STAR_SVG}</div>
+    <h2 style="margin-bottom:6px">لوحة تحكم ${esc(PHARMACY_NAME)}</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:22px">سجّل دخولك للمتابعة</p>
+    <div class="field" style="text-align:right"><label>اسم المستخدم</label><input id="loginUser" autocomplete="username" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+    <div class="field" style="text-align:right"><label>كلمة المرور</label><input id="loginPass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+    <button class="btn-primary" onclick="adminLogin()">دخول</button>
+    <div style="margin-top:16px"><a href="#/store" style="font-size:13px;color:var(--muted)">${ic('arrowright',14)} رجوع للمتجر</a></div>
+  </div></div>`;
+}
+async function adminLogin(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  let h = '';
+  try{ h = await sha256(p); }catch(e){ toast('المتصفح لا يدعم التحقق الآمن — افتح الموقع عبر https','err'); return; }
+  const found = ADMINS.find(a=>a.user===u && a.hash===h);
+  if(found){ STATE.admin = found; STATE.adminView = 'overview'; renderAdmin(); toast('أهلاً بيك، '+found.name,'ok'); }
+  else toast('بيانات الدخول غلط','err');
+}
+function adminLogout(){
+  STATE.admin = null; document.getElementById('app').innerHTML = '';
+  renderAdmin();
+}
+
+function viewOverview(){
+  const pa = Object.entries(STATE.products||{}).map(([id,p])=>({id,...p}));
+  const oa = Object.entries(STATE.orders||{}).map(([id,o])=>({id,...o}));
+  const today = new Date(); today.setHours(0,0,0,0);
+  const done = oa.filter(o=>o.status==='completed');
+  const revToday = done.filter(o=>o.createdAt>=today.getTime()).reduce((s,o)=>s+o.total,0);
+  const revAll = done.reduce((s,o)=>s+o.total,0);
+  const low = pa.filter(p=>!isExpired(p) && (p.stock||0)<=LOW_STOCK_THRESHOLD);
+  const expired = pa.filter(isExpired);
+  const soon = pa.filter(p=>{ const d = daysUntil(p.expiry); return d>=0 && d<=EXPIRY_WARNING_DAYS; });
+  const pending = oa.filter(o=>o.status==='pending');
+  const days = [];
+  for(let i=6;i>=0;i--){ const d = new Date(today); d.setDate(d.getDate()-i); days.push(d); }
+  const sums = days.map(d=>{ const a = d.getTime(), b = a+86400000; return done.filter(o=>o.createdAt>=a && o.createdAt<b).reduce((s,o)=>s+o.total,0); });
+  const mx = Math.max(1,...sums);
+  const alerts = [...expired.map(p=>({p,t:'expired'})), ...low.map(p=>({p,t:'low'})), ...soon.map(p=>({p,t:'soon'}))].slice(0,10);
+  return `
+    <div class="admin-topline"><h2>نظرة عامة</h2><span class="who">${esc(STATE.admin.name)}</span></div>
+    <div class="stat-cards">
+      <div class="stat-card"><div class="lbl">إيرادات النهاردة</div><div class="val num">${fmtMoney(revToday)}</div></div>
+      <div class="stat-card"><div class="lbl">إجمالي الإيرادات</div><div class="val num">${fmtMoney(revAll)}</div></div>
+      <div class="stat-card ${pending.length?'alert':''}"><div class="lbl">طلبات قيد الانتظار</div><div class="val num">${pending.length}</div></div>
+      <div class="stat-card ${low.length?'alert':''}"><div class="lbl">أصناف قاربت تخلص</div><div class="val num">${low.length}</div></div>
+      <div class="stat-card ${expired.length?'alert':''}"><div class="lbl">أصناف منتهية الصلاحية</div><div class="val num">${expired.length}</div></div>
+      <div class="stat-card ${soon.length?'alert':''}"><div class="lbl">قربت تنتهي صلاحيتها</div><div class="val num">${soon.length}</div></div>
+    </div>
+    <div class="panel"><div class="panel-head"><h3>${ic('trending',18)} إيرادات آخر 7 أيام</h3></div>
+      <div class="bars">${sums.map((s,i)=>`<div class="bar"><b>${s?Math.round(s).toLocaleString('ar-EG'):''}</b><i style="height:${Math.max(2,s/mx*100)}%"></i><span>${days[i].toLocaleDateString('ar-EG',{weekday:'short'})}</span></div>`).join('')}</div></div>
+    <div class="panel"><div class="panel-head"><h3>${ic('alert',18)} تنبيهات المخزون والصلاحية</h3></div><div class="table-scroll"><table class="mini-table">
+      <tr><th>الصنف</th><th>الكمية</th><th>الصلاحية</th><th>الحالة</th></tr>
+      ${alerts.map(({p,t})=>`<tr><td>${esc(p.name)}</td><td class="num">${p.stock||0}</td><td class="num">${esc(p.expiry||'-')}</td><td>${t==='expired'?'<span class="pill danger">منتهي الصلاحية</span>':t==='low'?'<span class="pill danger">كمية قليلة</span>':'<span class="pill warn">قرب الانتهاء</span>'}</td></tr>`).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--muted)">مفيش تنبيهات حالياً</td></tr>'}
+    </table></div></div>
+    <div class="panel"><div class="panel-head"><h3>${ic('clock',18)} آخر الطلبات</h3><a href="javascript:void(0)" onclick="STATE.adminView='orders';renderAdmin()" style="font-size:13px;color:var(--primary-2);font-weight:700">عرض الكل</a></div><div class="table-scroll"><table class="mini-table">
+      <tr><th>العميل</th><th>الإجمالي</th><th>الحالة</th><th>الوقت</th></tr>
+      ${oa.sort((a,b)=>b.createdAt-a.createdAt).slice(0,6).map(o=>`<tr><td>${esc(o.customerName)}</td><td class="num">${fmtMoney(o.total)}</td><td>${statusPill(o.status)}</td><td class="num">${new Date(o.createdAt).toLocaleString('ar-EG')}</td></tr>`).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--muted)">لا يوجد طلبات بعد</td></tr>'}
+    </table></div></div>`;
+}
+
+function viewInventory(){
+  return `
+    <div class="admin-topline"><h2>إدارة المخزون</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="mini-btn primary" onclick="document.getElementById('bulkImg').click()">${ic('image',16)} رفع صور بالجملة</button><input type="file" id="bulkImg" accept="image/*" multiple class="hidden" onchange="bulkUploadImages(event)"><button class="fab" onclick="openProductModal()">+ إضافة صنف جديد</button></div></div>
+    <div class="panel">
+      <div class="toolbar">
+        <input placeholder="بحث بالاسم..." id="invSearch" oninput="filterInventory()">
+        <select id="invCat" onchange="filterInventory()"><option value="">كل الأقسام</option>${CATEGORIES.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select>
+        <select id="invStatus" onchange="filterInventory()"><option value="">كل الحالات</option><option value="low">كمية قليلة</option><option value="expired">منتهي الصلاحية</option><option value="soon">قرب الانتهاء</option></select>
+      </div>
+      <div class="table-scroll"><table id="invTable" class="mini-table"></table></div>
+    </div>`;
+}
+function normName(s){
+  return String(s).toLowerCase().replace(/\.[a-z0-9]+$/i,'').replace(/[\s_\-.+()]/g,'').replace(/[\u064B-\u0652]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');
+}
+async function bulkUploadImages(e){
+  const files = Array.from(e.target.files||[]); if(!files.length) return;
+  const prods = Object.entries(STATE.products||{}).map(([id,p])=>({id,key:normName(p.name)}));
+  const updates = {}; let ok = 0; const miss = [];
+  toast('جاري معالجة '+files.length+' صورة...');
+  for(const f of files){
+    const base = f.name.replace(/\.[^.]+$/,''), k = normName(base);
+    let m = prods.find(p=>p.id===base) || prods.find(p=>p.key===k);
+    if(!m && k.length>=3){ const c = prods.filter(p=>p.key.includes(k)||k.includes(p.key)); if(c.length===1) m = c[0]; }
+    if(!m){ miss.push(f.name); continue; }
+    try{ updates['products/'+m.id+'/image'] = await compressImage(f,520,.8); ok++; }catch(err){ miss.push(f.name); }
+  }
+  e.target.value = '';
+  if(ok) await dbUpdate(updates);
+  toast(`تم ربط ${ok} صورة`+(miss.length?` — لم تُطابق: ${miss.slice(0,4).join('، ')}${miss.length>4?'…':''}`:''), miss.length?'err':'ok');
+}
+function inventoryHead(){ return `<tr><th>الصنف</th><th>القسم</th><th>السعر</th><th>الكمية</th><th>الصلاحية</th><th>روشتة</th><th></th></tr>`; }
+function renderInventoryRows(arr){
+  if(!arr.length) return '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:30px">لا توجد أصناف مطابقة</td></tr>';
+  return arr.map(p=>{
+    const d = daysUntil(p.expiry);
+    return `<tr><td><span class="thumb-sm">${productVisual(p)}</span>${esc(p.name)}</td><td>${esc(catName(p.category))}</td>
+      <td class="num">${fmtMoney(p.price)}${p.oldPrice?`<br><s class="num" style="font-size:11px;color:var(--muted)">${fmtMoney(p.oldPrice)}</s>`:''}</td>
+      <td class="num">${(p.stock||0)<=LOW_STOCK_THRESHOLD?`<span class="pill danger">${p.stock||0}</span>`:p.stock}</td>
+      <td class="num">${p.expiry?(d<0?`<span class="pill danger">${esc(p.expiry)} (منتهي)</span>`:d<=EXPIRY_WARNING_DAYS?`<span class="pill warn">${esc(p.expiry)}</span>`:esc(p.expiry)):'-'}</td>
+      <td>${p.rx?'<span class="pill pending">مطلوبة</span>':'-'}</td>
+      <td><button class="mini-btn" onclick="openProductModal('${p.id}')">تعديل</button><button class="mini-btn danger" onclick="deleteProduct('${p.id}')">حذف</button></td></tr>`;
+  }).join('');
+}
+function filterInventory(){
+  const s = document.getElementById('invSearch').value, c = document.getElementById('invCat').value, st = document.getElementById('invStatus').value;
+  const arr = Object.entries(STATE.products||{}).map(([id,p])=>({id,...p})).filter(p=>{
+    const d = daysUntil(p.expiry);
+    return (!s||p.name.includes(s)) && (!c||p.category===c) &&
+      (!st || (st==='low'&&(p.stock||0)<=LOW_STOCK_THRESHOLD) || (st==='expired'&&d<0) || (st==='soon'&&d>=0&&d<=EXPIRY_WARNING_DAYS));
+  });
+  document.getElementById('invTable').innerHTML = inventoryHead()+renderInventoryRows(arr);
+}
+function productModalHtml(){
+  return `<div class="modal-backdrop" id="productModal"><div class="modal">
+    <span class="close-x" onclick="closeProductModal()">${ic('x',16)}</span>
+    <h3 id="prodModalTitle">إضافة صنف جديد</h3>
+    <input type="hidden" id="pId">
+    <div class="field"><label>اسم المنتج</label><input id="pName"></div>
+    <div class="field"><label>صورة المنتج</label>
+      <div class="img-prev" id="pImgPrev"></div>
+      <input type="file" id="pImgFile" accept="image/*" onchange="handleProductImage(event)" style="margin-bottom:8px">
+      <input id="pImgUrl" placeholder="أو الصق رابط صورة (https://...)" oninput="onImageUrl(this.value)">
+      <button type="button" class="mini-btn danger" style="margin-top:8px" onclick="clearProductImage()">إزالة الصورة</button>
+    </div>
+    <div class="field"><label>القسم</label><select id="pCat">${CATEGORIES.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select></div>
+    <div class="field-row">
+      <div class="field"><label>السعر (ج.م)</label><input id="pPrice" type="number" min="0" step="0.25"></div>
+      <div class="field"><label>السعر قبل الخصم (اختياري)</label><input id="pOldPrice" type="number" min="0" step="0.25"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>الكمية بالمخزون</label><input id="pStock" type="number" min="0"></div>
+      <div class="field"><label>تاريخ انتهاء الصلاحية</label><input id="pExpiry" type="date"></div>
+    </div>
+    <div class="field" style="display:flex;align-items:center;gap:10px"><input type="checkbox" id="pRx" style="width:auto"><label style="margin:0">يتطلب روشتة طبية</label></div>
+    <button class="btn-primary" onclick="saveProduct()">حفظ الصنف</button>
+  </div></div>`;
+}
+function previewProductImage(){
+  const name = document.getElementById('pName').value || 'منتج';
+  const cat = document.getElementById('pCat').value;
+  document.getElementById('pImgPrev').innerHTML = productVisual({name, category:cat, image:modalImage});
+}
+function openProductModal(id){
+  const p = id ? STATE.products[id] : null;
+  document.getElementById('productModal').classList.add('show');
+  document.getElementById('prodModalTitle').textContent = p ? 'تعديل الصنف' : 'إضافة صنف جديد';
+  document.getElementById('pId').value = id||'';
+  document.getElementById('pName').value = p?p.name:'';
+  document.getElementById('pCat').value = p?p.category:CATEGORIES[0].id;
+  document.getElementById('pPrice').value = p?p.price:'';
+  document.getElementById('pOldPrice').value = p&&p.oldPrice?p.oldPrice:'';
+  document.getElementById('pStock').value = p?p.stock:'';
+  document.getElementById('pExpiry').value = p?(p.expiry||''):'';
+  document.getElementById('pRx').checked = p?!!p.rx:false;
+  modalImage = p&&p.image?p.image:'';
+  document.getElementById('pImgUrl').value = modalImage.startsWith('https://')?modalImage:'';
+  document.getElementById('pImgFile').value = '';
+  previewProductImage();
+}
+function closeProductModal(){ document.getElementById('productModal').classList.remove('show'); }
+async function handleProductImage(e){
+  const f = e.target.files[0]; if(!f) return;
+  try{ modalImage = await compressImage(f,520,.8); document.getElementById('pImgUrl').value=''; previewProductImage(); }
+  catch(err){ toast('تعذر قراءة الصورة','err'); }
+}
+function onImageUrl(v){ modalImage = /^https:\/\//.test(v.trim())?v.trim():''; previewProductImage(); }
+function clearProductImage(){ modalImage=''; document.getElementById('pImgUrl').value=''; document.getElementById('pImgFile').value=''; previewProductImage(); }
+function saveProduct(){
+  const id = document.getElementById('pId').value || uid();
+  const name = document.getElementById('pName').value.trim();
+  if(!name){ toast('اكتب اسم المنتج','err'); return; }
+  const price = Number(document.getElementById('pPrice').value)||0;
+  const old = Number(document.getElementById('pOldPrice').value)||0;
+  const data = {
+    name, category:document.getElementById('pCat').value, price,
+    stock:Number(document.getElementById('pStock').value)||0,
+    expiry:document.getElementById('pExpiry').value, rx:document.getElementById('pRx').checked
+  };
+  if(old>price) data.oldPrice = old;
+  if(modalImage) data.image = modalImage;
+  dbSet('products/'+id, data).then(()=>{ toast('تم الحفظ','ok'); closeProductModal(); renderAdmin(); });
+}
+function deleteProduct(id){
+  if(!confirm('متأكد من حذف الصنف ده؟')) return;
+  dbRemove('products/'+id).then(()=>{ toast('تم الحذف','ok'); renderAdmin(); });
+}
+
+function posProducts(){ return Object.entries(STATE.products||{}).map(([id,p])=>({id,...p})).filter(p=>(p.stock||0)>0 && isSellable(p)); }
+function posTotal(){ return Object.entries(posCart).reduce((s,[id,q])=>{ const p = STATE.products[id]; return s+(p?p.price*q:0); },0); }
+function viewPOS(){
+  return `
+    <div class="admin-topline"><h2>نقطة البيع</h2></div>
+    <div class="pos-grid">
+      <div>
+        <input placeholder="دوّر على صنف..." id="posSearch" oninput="filterPOS()" style="width:100%;padding:11px 14px;border-radius:11px;border:1.5px solid var(--border);margin-bottom:14px;outline:none">
+        <div class="grid pos-products" id="posGrid">${renderPosGrid(posProducts())}</div>
+      </div>
+      <div class="pos-cart">
+        <h3 style="margin-bottom:12px">الفاتورة الحالية</h3>
+        <div id="posCartItems">${renderPosCartItems()}</div>
+        <div class="field" style="margin-top:12px"><label>طريقة الدفع</label>
+          <div class="pay-options">
+            <div class="pay-opt ${posPayMethod==='cash'?'active':''}" onclick="setPosPay('cash')">${ic('banknote',18)} كاش</div>
+            <div class="pay-opt ${posPayMethod==='instapay'?'active':''}" onclick="setPosPay('instapay')">${ic('landmark',18)} إنستاباي</div>
+          </div></div>
+        ${posPayMethod==='instapay'?`<button type="button" class="btn-outline" style="margin-bottom:10px" onclick="window.open('${INSTAPAY_LINK}','_blank','noopener')">${ic('landmark',18)} افتح صفحة الدفع</button>`:''}
+        <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:8px"><input type="checkbox" ${posPrint?'checked':''} onchange="posPrint=this.checked"> طباعة الفاتورة بعد البيع</label>
+        <div class="total-row"><span>الإجمالي</span><span class="num" id="posTotal">${fmtMoney(posTotal())}</span></div>
+        <button class="btn-primary" onclick="completePosSale()">إتمام البيع</button>
+      </div>
+    </div>`;
+}
+function setPosPay(m){ posPayMethod = m; renderAdmin(); }
+function renderPosGrid(arr){
+  if(!arr.length) return '<div class="empty-state" style="grid-column:1/-1">مفيش أصناف متاحة</div>';
+  return arr.map(p=>`<div class="card pos-item" onclick="posAdd('${p.id}')"><div class="pic">${productVisual(p)}</div><h4>${esc(p.name)}</h4>
+    <div class="price-row"><span class="price num">${fmtMoney(p.price)}</span><span style="font-size:12px;color:var(--muted)" class="num">متاح: ${p.stock}</span></div></div>`).join('');
+}
+function filterPOS(){
+  const s = document.getElementById('posSearch').value;
+  document.getElementById('posGrid').innerHTML = renderPosGrid(posProducts().filter(p=>!s||p.name.includes(s)));
+}
+function updatePosCart(){ document.getElementById('posCartItems').innerHTML = renderPosCartItems(); document.getElementById('posTotal').textContent = fmtMoney(posTotal()); }
+function posAdd(id){
+  const p = STATE.products[id];
+  if((posCart[id]||0)>=p.stock){ toast('الكمية المتاحة خلصت','err'); return; }
+  posCart[id] = (posCart[id]||0)+1; updatePosCart();
+}
+function posChangeQty(id,delta){
+  const q = (posCart[id]||0)+delta, p = STATE.products[id];
+  if(q<=0) delete posCart[id]; else if(p && q>p.stock){ toast('الكمية المتاحة خلصت','err'); return; } else posCart[id] = q;
+  updatePosCart();
+}
+function renderPosCartItems(){
+  const items = Object.entries(posCart).filter(([id])=>STATE.products[id]);
+  if(!items.length) return '<div class="empty-state" style="padding:20px">الفاتورة فاضية</div>';
+  return items.map(([id,q])=>{ const p = STATE.products[id];
+    return `<div class="cart-item"><div class="info"><div class="nm" style="font-size:13.5px">${esc(p.name)}</div>
+      <div class="stepper" style="display:inline-flex;margin-top:6px"><button onclick="posChangeQty('${id}',-1)">−</button><span class="num">${q}</span><button onclick="posChangeQty('${id}',1)">+</button></div></div>
+      <div class="num" style="font-weight:700">${fmtMoney(p.price*q)}</div></div>`; }).join('');
+}
+function printReceipt(items,total,method){
+  const w = window.open('','_blank','width=380,height=600'); if(!w) return;
+  w.document.write(`<html dir="rtl"><head><meta charset="utf-8"><title>فاتورة</title><style>body{font-family:Tahoma,sans-serif;font-size:13px;padding:14px}table{width:100%;border-collapse:collapse}td,th{padding:4px 0;border-bottom:1px dashed #999;text-align:right}h3,p{text-align:center;margin:4px 0}.t{font-weight:bold;font-size:15px;margin-top:10px}</style></head><body>
+  <h3>${esc(PHARMACY_NAME)}</h3><p>${new Date().toLocaleString('ar-EG')}</p>
+  <table><tr><th>الصنف</th><th>الكمية</th><th>السعر</th></tr>${items.map(i=>`<tr><td>${esc(i.name)}</td><td>${i.qty}</td><td>${(i.price*i.qty).toLocaleString('ar-EG')}</td></tr>`).join('')}</table>
+  <p class="t">الإجمالي: ${fmtMoney(total)}</p><p>الدفع: ${method==='cash'?'كاش':'إنستاباي'}</p><p>شكراً لزيارتكم</p>
+  <script>window.onload=function(){window.print()}<\/script></body></html>`);
+  w.document.close();
+}
+function completePosSale(){
+  const items = Object.entries(posCart).filter(([id])=>STATE.products[id]);
+  if(!items.length){ toast('الفاتورة فاضية','err'); return; }
+  const list = items.map(([id,q])=>({ id, name:STATE.products[id].name, price:STATE.products[id].price, qty:q }));
+  const total = list.reduce((s,i)=>s+i.price*i.qty,0), orderId = uid(), updates = {};
+  updates['orders/'+orderId] = { customerName:'عميل كاشير', phone:'-', address:'-', items:list, total, paymentMethod:posPayMethod, status:'completed', createdAt:Date.now(), source:'pos' };
+  list.forEach(i=>{ updates['products/'+i.id+'/stock'] = Math.max(0,(STATE.products[i.id].stock||0)-i.qty); });
+  const method = posPayMethod, doPrint = posPrint;
+  dbUpdate(updates).then(()=>{
+    if(doPrint) printReceipt(list,total,method);
+    posCart = {}; posPayMethod = 'cash'; toast('تم البيع بنجاح','ok'); renderAdmin();
+  });
+}
+
+function receiptCellHtml(id){
+  const p = STATE.payments && STATE.payments[id];
+  if(p && p.receiptImage) return `<button class="mini-btn primary" onclick="viewImage('payments','${id}')">${ic('paperclip',15)} عرض الإيصال</button>`;
+  return '-';
+}
+function viewImage(kind,id){
+  const src = kind==='payments' ? (STATE.payments[id]||{}).receiptImage : (STATE.prescriptions[id]||{}).image;
+  if(!src) return;
+  const w = window.open('','_blank');
+  if(!w){ toast('اسمح بالنوافذ المنبثقة وحاول تاني','err'); return; }
+  w.document.write(`<title>صورة</title><body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;min-height:100vh"><img src="${src}" style="max-width:100%;max-height:100vh"></body>`);
+}
+function filterChip(id,label,count){
+  return `<div class="chip ${(STATE.ordersFilter||'all')===id?'active':''}" onclick="STATE.ordersFilter='${id}';renderAdmin()">${label} <small>${count}</small></div>`;
+}
+function orderActionsHtml(o){
+  if(o.status==='pending') return `<button class="mini-btn primary" onclick="updateOrderStatus('${o.id}','preparing')">${ic('check',15)} قبول</button><button class="mini-btn danger" onclick="updateOrderStatus('${o.id}','cancelled')">${ic('xcircle',15)} رفض</button>`;
+  if(o.status==='preparing') return `<button class="mini-btn primary" onclick="updateOrderStatus('${o.id}','completed')">${ic('package',15)} تأكيد التسليم</button><button class="mini-btn danger" onclick="updateOrderStatus('${o.id}','cancelled')">${ic('xcircle',15)} رفض</button><button class="mini-btn" onclick="updateOrderStatus('${o.id}','pending')">${ic('undo',15)} للمراجعة</button>`;
+  return `<button class="mini-btn" onclick="updateOrderStatus('${o.id}','pending')">${ic('undo',15)} إعادة النظر</button>`;
+}
+function viewOrders(){
+  let arr = Object.entries(STATE.orders||{}).map(([id,o])=>({id,...o})).sort((a,b)=>b.createdAt-a.createdAt);
+  const cnt = { all:arr.length };
+  ['pending','preparing','completed','cancelled'].forEach(s=>cnt[s] = arr.filter(o=>o.status===s).length);
+  const f = STATE.ordersFilter||'all';
+  if(f!=='all') arr = arr.filter(o=>o.status===f);
+  return `
+    <div class="admin-topline"><h2>إدارة الطلبات</h2><button class="mini-btn primary" onclick="lockOrdersLandscape()">${ic('smartphone',15)} وضع أفقي</button></div>
+    <div class="rotate-hint">${ic('rotate',15)} لو الشاشة ضيقة، دوّر الموبايل أفقي لرؤية كل البيانات.</div>
+    <div class="cats" style="padding:0;margin-bottom:14px">${filterChip('all','الكل',cnt.all)}${filterChip('pending','قيد الانتظار',cnt.pending)}${filterChip('preparing','قيد التجهيز',cnt.preparing)}${filterChip('completed','مكتمل',cnt.completed)}${filterChip('cancelled','ملغي',cnt.cancelled)}</div>
+    <div class="panel"><div class="table-scroll"><table class="orders-table">
+      <tr><th>العميل</th><th>التليفون</th><th>العنوان</th><th>الإجمالي</th><th>الدفع</th><th>الإيصال</th><th>الحالة</th><th>الوقت</th><th>الإجراءات</th></tr>
+      ${arr.map(o=>`<tr>
+        <td data-label="العميل">${esc(o.customerName)}</td>
+        <td data-label="التليفون" class="num">${o.phone&&o.phone!=='-'?esc(o.phone):'كاشير'}</td>
+        <td data-label="العنوان" style="max-width:180px">${o.address&&o.address!=='-'?esc(o.address):'-'}</td>
+        <td data-label="الإجمالي" class="num">${fmtMoney(o.total)}</td>
+        <td data-label="الدفع">${o.paymentMethod==='cash'?'كاش':o.paymentMethod==='instapay'?'إنستاباي':'-'}</td>
+        <td data-label="الإيصال">${receiptCellHtml(o.id)}</td>
+        <td data-label="الحالة">${statusPill(o.status)}</td>
+        <td data-label="الوقت" class="num">${new Date(o.createdAt).toLocaleString('ar-EG')}</td>
+        <td data-label="الإجراءات"><div class="order-actions">${orderActionsHtml(o)}</div></td></tr>`).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:30px">لا يوجد طلبات في هذا التصنيف</td></tr>'}
+    </table></div></div>`;
+}
+function updateOrderStatus(id,status){
+  const order = STATE.orders[id]; if(!order) return;
+  const updates = {}; updates['orders/'+id+'/status'] = status;
+  if(status==='completed' && !order.stockDeducted && order.source!=='pos'){
+    (order.items||[]).forEach(it=>{ const p = STATE.products[it.id]; if(p) updates['products/'+it.id+'/stock'] = Math.max(0,(p.stock||0)-it.qty); });
+    updates['orders/'+id+'/stockDeducted'] = true;
+  }
+  let msg = null;
+  if(status==='preparing') msg = `تم قبول طلبك في ${PHARMACY_NAME}\nرقم الطلب: ${id}\nجاري تجهيزه الآن.`;
+  else if(status==='completed') msg = `تم تسليم طلبك من ${PHARMACY_NAME}\nرقم الطلب: ${id}\nالإجمالي: ${fmtMoney(order.total)}\nشكراً لثقتك!`;
+  else if(status==='cancelled') msg = `نعتذر، تم رفض/إلغاء طلبك في ${PHARMACY_NAME}.\nرقم الطلب: ${id}\nللاستفسار تواصل معنا على واتساب: ${SUPPORT_WHATSAPP}`;
+  if(msg && order.phone && order.phone!=='-') window.open(`https://wa.me/${toEgyptIntl(order.phone)}?text=${encodeURIComponent(msg)}`,'_blank');
+  dbUpdate(updates).then(()=>{ toast('تم تحديث حالة الطلب','ok'); renderAdmin(); });
+}
+function lockOrdersLandscape(){
+  const el = document.documentElement, req = el.requestFullscreen || el.webkitRequestFullscreen;
+  const tryLock = ()=>{
+    if(screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(()=>toast('دوّر الموبايل يدوي للوضع الأفقي ','ok'));
+    else toast('دوّر الموبايل يدوي للوضع الأفقي ','ok');
+  };
+  if(req) req.call(el).then(tryLock).catch(()=>toast('دوّر الموبايل يدوي للوضع الأفقي ','err'));
+  else toast('دوّر الموبايل يدوي للوضع الأفقي ','err');
+}
+
+function viewPrescriptions(){
+  const rx = Object.entries(STATE.prescriptions||{}).filter(([id,r])=>r&&r.image);
+  return `<div class="admin-topline"><h2>مراجعة الروشتات الطبية</h2></div><div class="panel"><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+    ${rx.length?rx.map(([id,r])=>`<div class="card"><img src="${r.image}" style="width:100%;border-radius:12px;height:160px;object-fit:cover;cursor:pointer" onclick="viewImage('prescriptions','${id}')"><h4 style="min-height:0">${esc(r.customerName)}</h4>
+      <div style="font-size:12px;color:var(--muted)" class="num">${new Date(r.createdAt).toLocaleString('ar-EG')}</div><div style="font-size:11px;color:var(--muted)">الطلب: ${esc(id)}</div></div>`).join(''):'<div class="empty-state" style="grid-column:1/-1">لا توجد روشتات مرفوعة بعد</div>'}
+  </div></div>`;
+}
+
+function viewReports(){
+  const oa = Object.entries(STATE.orders||{}).map(([id,o])=>({id,...o})).filter(o=>o.status==='completed');
+  const sales = {};
+  oa.forEach(o=>(o.items||[]).forEach(it=>{ sales[it.name] = (sales[it.name]||0)+it.qty; }));
+  const top = Object.entries(sales).sort((a,b)=>b[1]-a[1]).slice(0,8), mx = top.length?top[0][1]:1;
+  const rev = oa.reduce((s,o)=>s+o.total,0), avg = oa.length?rev/oa.length:0;
+  const cash = oa.filter(o=>o.paymentMethod==='cash').reduce((s,o)=>s+o.total,0), insta = oa.filter(o=>o.paymentMethod==='instapay').reduce((s,o)=>s+o.total,0);
+  return `<div class="admin-topline"><h2>التقارير</h2><button class="fab" onclick="exportCSV()">${ic('download',15)} تصدير CSV</button></div>
+    <div class="stat-cards">
+      <div class="stat-card"><div class="lbl">إجمالي الإيرادات</div><div class="val num">${fmtMoney(rev)}</div></div>
+      <div class="stat-card"><div class="lbl">الطلبات المكتملة</div><div class="val num">${oa.length}</div></div>
+      <div class="stat-card"><div class="lbl">متوسط قيمة الطلب</div><div class="val num">${fmtMoney(Math.round(avg))}</div></div>
+      <div class="stat-card"><div class="lbl">كاش</div><div class="val num">${fmtMoney(cash)}</div></div>
+      <div class="stat-card"><div class="lbl">إنستاباي</div><div class="val num">${fmtMoney(insta)}</div></div>
+    </div>
+    <div class="panel"><div class="panel-head"><h3>الأصناف الأكثر مبيعاً</h3></div>
+      ${top.length?top.map(([n,q])=>`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px"><span>${esc(n)}</span><span class="num">${q} وحدة</span></div><div style="background:var(--soft);border-radius:8px;height:9px;overflow:hidden"><div style="width:${q/mx*100}%;background:linear-gradient(90deg,var(--primary-2),var(--primary));height:100%"></div></div></div>`).join(''):'<div class="empty-state">لا توجد بيانات مبيعات بعد</div>'}
+    </div>`;
+}
+function exportCSV(){
+  const q = v=>`"${String(v==null?'':v).replace(/"/g,'""')}"`;
+  let csv = ['رقم الطلب','العميل','التليفون','الإجمالي','الدفع','الحالة','التاريخ'].map(q).join(',')+'\n';
+  Object.entries(STATE.orders||{}).forEach(([id,o])=>{
+    csv += [id,o.customerName,o.phone,o.total,o.paymentMethod,o.status,new Date(o.createdAt).toLocaleString('ar-EG')].map(q).join(',')+'\n';
+  });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:'text/csv;charset=utf-8;'}));
+  a.download = 'orders_report.csv'; a.click();
+}
+
+watchMyOrders();
+render();
+</script>
+</body>
+</html>
