@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#c07a3a">
+<meta name="description" content="Moon Café — أجود السموزي والقهوة والموهيتو والكيك في مكان واحد">
+<title>Moon Café — استمتع بكل لحظة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&amp;family=Playfair+Display:ital,wght@0,700;1,400&amp;display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky:#c07a3a; --ocean:#7a4524; --deep:#2e1a10;
+  --foam:#f7ede1; --white:#ffffff; --cream:#fbf7f2;
+  --mint:#d9a86c; --coral:#d9582b; --gold:#f2b84b;
+  --text:#1f1410; --muted:#7a6a5f;
+  --card-bg:rgba(255,255,255,0.92);
+  --glass:rgba(192,122,58,0.08);
+  --shadow:0 8px 40px rgba(122,69,36,0.13);
+  --radius:22px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Tajawal',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+
+.ic{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.16em;flex-shrink:0}
+
+#customerInfoModal{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .25s ease}
+#customerInfoModal .cim-box{background:#fff;border-radius:24px;padding:32px 28px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,0.25);position:relative;animation:slideUp .3s cubic-bezier(.22,1,.36,1)}
+#customerInfoModal .cim-title{font-size:1.2rem;font-weight:900;color:#2e1a10;margin-bottom:6px;text-align:center}
+#customerInfoModal .cim-sub{font-size:.85rem;color:#7a6a5f;text-align:center;margin-bottom:22px}
+#customerInfoModal .cim-field{margin-bottom:16px}
+#customerInfoModal .cim-field label{display:block;font-weight:700;font-size:.88rem;color:#1f1410;margin-bottom:6px}
+#customerInfoModal .cim-field input{width:100%;padding:12px 14px;border:2px solid #e7ddd2;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s;background:#fbf7f2}
+#customerInfoModal .cim-field input:focus{border-color:#c07a3a;background:#fff}
+#customerInfoModal .cim-confirm{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#c07a3a,#7a4524);color:#fff;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;margin-top:6px;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 20px rgba(192,122,58,0.35)}
+#customerInfoModal .cim-confirm:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(192,122,58,0.45)}
+#orderConfirmModal{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .25s ease}
+#orderConfirmModal .ocm-box{background:#fff;border-radius:24px;padding:32px 28px;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,0.25);text-align:center;animation:slideUp .3s cubic-bezier(.22,1,.36,1)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+@media(hover:hover){
+  .cursor{width:18px;height:18px;border:2.5px solid var(--sky);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .15s,border-color .2s;transform:translate(-50%,-50%)}
+  .cursor-dot{width:6px;height:6px;background:var(--sky);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s}
+}
+.no-hover .cursor,.no-hover .cursor-dot{display:none}
+
+nav{position:fixed;top:0;width:100%;z-index:100;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(192,122,58,0.12);box-shadow:0 2px 30px rgba(122,69,36,0.07);transition:padding .3s}
+.logo{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--ocean);letter-spacing:-1px;text-decoration:none}
+.logo span{color:var(--coral);font-style:italic}
+nav ul{list-style:none;display:flex;gap:28px}
+nav ul li a{text-decoration:none;font-weight:500;font-size:.97rem;color:var(--deep);transition:color .2s;position:relative}
+nav ul li a::after{content:'';position:absolute;bottom:-4px;right:0;width:0;height:2px;background:var(--sky);transition:width .3s}
+nav ul li a:hover{color:var(--sky)}
+nav ul li a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;z-index:101}
+.hamburger span{display:block;width:26px;height:2.5px;background:var(--deep);border-radius:4px;transition:transform .3s,opacity .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+.mobile-nav{display:none;position:fixed;top:66px;left:0;right:0;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--foam);z-index:99;padding:16px 24px 24px;box-shadow:0 10px 40px rgba(122,69,36,0.1);flex-direction:column;gap:4px;transform:translateY(-10px);opacity:0;transition:transform .3s,opacity .3s}
+.mobile-nav.open{display:flex;transform:translateY(0);opacity:1}
+.mobile-nav a{display:block;padding:12px 16px;text-decoration:none;font-weight:600;font-size:1rem;color:var(--deep);border-radius:12px;transition:background .2s}
+.mobile-nav a:hover{background:var(--foam);color:var(--sky)}
+.nav-order-btn{background:linear-gradient(135deg,var(--sky),var(--ocean));color:#fff;border:none;padding:10px 22px;border-radius:50px;font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(192,122,58,0.35);white-space:nowrap}
+.nav-order-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(192,122,58,0.45)}
+.lang-toggle{background:rgba(192,122,58,0.1);color:var(--ocean);border:2px solid var(--sky);padding:8px 16px;border-radius:50px;font-family:'Tajawal',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;margin-left:8px}
+.lang-toggle:hover{background:var(--sky);color:#fff}
+
+.hero{min-height:100vh;background:linear-gradient(145deg,#f7ede1 0%,#ecd0ac 30%,#c07a3a 70%,#7a4524 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding-top:80px}
+.hero-bubbles{position:absolute;inset:0;pointer-events:none}
+.bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,0.15);animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.7}90%{opacity:.3}100%{transform:translateY(-20vh) scale(1.2);opacity:0}}
+.hero-content{text-align:center;z-index:2;padding:40px 20px;animation:heroIn 1s cubic-bezier(.22,1,.36,1) both;max-width:700px;margin:0 auto}
+@keyframes heroIn{from{opacity:0;transform:translateY(50px)}to{opacity:1;transform:translateY(0)}}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.25);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:8px 22px;border-radius:50px;font-size:.9rem;font-weight:500;margin-bottom:24px;letter-spacing:1px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,8vw,6.5rem);color:#fff;line-height:1.1;margin-bottom:20px;text-shadow:0 4px 30px rgba(46,26,16,0.35)}
+.hero h1 em{font-style:italic;color:#fde68a}
+.hero p{font-size:clamp(.95rem,2.5vw,1.25rem);color:rgba(255,255,255,0.92);max-width:500px;margin:0 auto 36px;line-height:1.7}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:#fff;color:var(--ocean);border:none;padding:13px 32px;border-radius:50px;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;transition:all .25s;box-shadow:0 8px 30px rgba(0,0,0,0.15)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 14px 40px rgba(0,0,0,0.2)}
+.btn-secondary{background:transparent;border:2px solid rgba(255,255,255,0.6);color:#fff;padding:13px 32px;border-radius:50px;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .25s;backdrop-filter:blur(8px)}
+.btn-secondary:hover{background:rgba(255,255,255,0.15);transform:translateY(-3px)}
+.hero-cards{display:flex;gap:16px;justify-content:center;margin-top:46px;flex-wrap:wrap}
+.hero-card{background:rgba(255,255,255,0.22);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.35);border-radius:18px;padding:16px 24px;text-align:center;color:#fff;transition:transform .3s;min-width:100px}
+.hero-card:hover{transform:translateY(-6px)}
+.hero-card .icon{font-size:2rem;margin-bottom:8px;display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);margin:0 auto 10px;border:1px solid rgba(255,255,255,0.25)}
+.hero-card strong{display:block;font-size:1.4rem;font-weight:900}
+.hero-card span{font-size:.82rem;opacity:.8}
+
+section{padding:80px 40px}
+.section-header{text-align:center;margin-bottom:56px}
+.section-tag{display:inline-block;background:var(--foam);color:var(--ocean);padding:6px 18px;border-radius:50px;font-size:.85rem;font-weight:700;margin-bottom:14px;letter-spacing:.5px}
+.section-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);color:var(--deep);line-height:1.2}
+.section-header p{color:var(--muted);font-size:1rem;margin-top:12px;max-width:480px;margin-inline:auto}
+
+.menu-section{background:#fff}
+.menu-tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:46px}
+.tab-btn{padding:9px 22px;border-radius:50px;border:2px solid var(--foam);background:var(--foam);color:var(--ocean);font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .25s;white-space:nowrap}
+.tab-btn.active,.tab-btn:hover{background:linear-gradient(135deg,var(--sky),var(--ocean));border-color:transparent;color:#fff;box-shadow:0 4px 18px rgba(192,122,58,0.4);transform:translateY(-2px)}
+
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px;max-width:1200px;margin:0 auto}
+.product-card{background:var(--card-bg);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s;position:relative;border:1px solid rgba(192,122,58,0.08)}
+.product-card:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 24px 60px rgba(122,69,36,0.2)}
+.product-card:hover .product-img{transform:scale(1.08)}
+.product-img-wrap{width:100%;height:200px;overflow:hidden;background:var(--foam);position:relative}
+.product-img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.product-badge{position:absolute;top:12px;right:12px;background:linear-gradient(135deg,var(--coral),#b91c1c);color:#fff;padding:4px 13px;border-radius:50px;font-size:.76rem;font-weight:800}
+.product-info{padding:18px 20px 20px}
+.product-name{font-size:1.1rem;font-weight:800;color:var(--deep);margin-bottom:6px}
+.product-desc{font-size:.86rem;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.product-footer{display:flex;justify-content:space-between;align-items:center}
+.product-price{font-size:1.25rem;font-weight:900;color:var(--ocean)}
+.product-price span{font-size:.78rem;font-weight:500;color:var(--muted)}
+.add-btn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--ocean));border:none;color:#fff;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(192,122,58,0.4)}
+.add-btn:hover{transform:scale(1.15) rotate(90deg);box-shadow:0 6px 20px rgba(192,122,58,0.55)}
+
+.about-section{background:linear-gradient(135deg,var(--deep) 0%,var(--ocean) 100%);color:#fff}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;max-width:1100px;margin:0 auto;align-items:center}
+.about-img-wrap{border-radius:28px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);height:400px}
+.about-img-wrap img{width:100%;height:100%;object-fit:cover}
+.about-text .section-header{text-align:right;margin-bottom:28px}
+.about-text .section-tag{background:rgba(255,255,255,0.15);color:#fff}
+.about-text h2{color:#fff}
+.about-text p{color:rgba(255,255,255,0.82);line-height:1.8;font-size:1rem}
+.about-features{margin-top:28px;display:flex;flex-direction:column;gap:14px}
+.feat-item{display:flex;align-items:center;gap:14px}
+.feat-icon{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;color:var(--gold)}
+.feat-item strong{display:block;font-size:1rem;color:#fff}
+.feat-item span{font-size:.85rem;color:rgba(255,255,255,0.7)}
+
+.gallery-section{background:var(--cream)}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,190px);gap:14px;max-width:1100px;margin:0 auto;border-radius:24px;overflow:hidden}
+.gallery-item{overflow:hidden;cursor:pointer;position:relative}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+.gallery-item:nth-child(4){grid-column:span 2}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.gallery-item:hover img{transform:scale(1.1)}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(122,69,36,0.6) 0%,transparent 60%);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:16px}
+.gallery-item:hover .gallery-overlay{opacity:1}
+.gallery-overlay span{color:#fff;font-weight:700;font-size:.92rem}
+
+.contact-section{background:#fff}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:46px;max-width:1000px;margin:0 auto}
+.contact-info h3{font-size:1.45rem;font-weight:800;color:var(--deep);margin-bottom:18px}
+.contact-info p{color:var(--muted);line-height:1.8;margin-bottom:22px}
+.contact-item{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.c-icon{width:46px;height:46px;border-radius:12px;background:var(--foam);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;color:var(--ocean)}
+.contact-item strong{display:block;font-size:.82rem;color:var(--muted)}
+.contact-item span{font-size:.97rem;font-weight:700;color:var(--deep)}
+.order-form{background:var(--cream);border-radius:var(--radius);padding:32px;border:1px solid var(--foam)}
+.order-form h3{font-size:1.35rem;font-weight:800;color:var(--deep);margin-bottom:22px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-weight:700;font-size:.88rem;color:var(--deep);margin-bottom:7px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 15px;border:2px solid var(--foam);border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.93rem;color:var(--text);background:#fff;transition:border-color .2s,box-shadow .2s;outline:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--sky);box-shadow:0 0 0 4px rgba(192,122,58,0.1)}
+.form-group textarea{resize:none;height:95px}
+.submit-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--sky),var(--ocean));color:#fff;border:none;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:1.05rem;font-weight:800;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 24px rgba(192,122,58,0.4)}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 34px rgba(192,122,58,0.5)}
+
+footer{background:var(--deep);color:rgba(255,255,255,0.7);padding:46px 40px 28px;text-align:center}
+footer .logo{color:#fff;margin-bottom:14px;display:block;font-size:1.7rem}
+footer p{font-size:.88rem;line-height:1.7;max-width:400px;margin:0 auto 22px}
+footer .social-links{display:flex;gap:12px;justify-content:center;margin-bottom:26px}
+footer .social-links a{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;text-decoration:none;transition:background .2s,transform .2s}
+footer .social-links a:hover{background:var(--sky);transform:translateY(-3px)}
+footer hr{border:none;border-top:1px solid rgba(255,255,255,0.1);margin-bottom:18px}
+footer small{font-size:.8rem}
+
+.cart-float{position:fixed;bottom:28px;left:28px;z-index:200;background:linear-gradient(135deg,var(--sky),var(--ocean));color:#fff;border:none;border-radius:50px;padding:13px 22px;font-family:'Tajawal',sans-serif;font-size:.97rem;font-weight:800;cursor:pointer;box-shadow:0 8px 30px rgba(192,122,58,0.5);display:flex;align-items:center;gap:10px;transition:transform .25s}
+.cart-float:hover{transform:scale(1.06)}
+.cart-count{background:#fff;color:var(--ocean);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.83rem;font-weight:900}
+
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-drawer{position:fixed;top:0;left:-420px;width:min(400px,100vw);height:100vh;background:#fff;z-index:301;padding:28px;overflow-y:auto;transition:left .35s cubic-bezier(.22,1,.36,1);box-shadow:-8px 0 60px rgba(0,0,0,0.15)}
+.cart-drawer.open{left:0}
+.cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
+.cart-header h3{font-size:1.35rem;font-weight:800;color:var(--deep)}
+.cart-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);display:flex}
+.cart-item{display:flex;gap:13px;align-items:center;padding:13px 0;border-bottom:1px solid var(--foam)}
+.cart-item-img{width:62px;height:62px;border-radius:12px;object-fit:cover;flex-shrink:0}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-name{font-weight:700;font-size:.93rem;color:var(--deep)}
+.cart-item-price{font-weight:800;color:var(--ocean);font-size:.97rem}
+.cart-item-qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty-btn{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--sky);background:none;color:var(--sky);font-size:.9rem;cursor:pointer;transition:all .2s}
+.qty-btn:hover{background:var(--sky);color:#fff}
+.qty-num{font-weight:800;font-size:.93rem;min-width:20px;text-align:center}
+.remove-item{background:none;border:none;color:#ef4444;cursor:pointer;font-size:1.1rem;flex-shrink:0;display:flex}
+.cart-total{padding:18px 0;border-top:2px solid var(--foam);margin-top:12px}
+.cart-total-row{display:flex;justify-content:space-between;margin-bottom:10px}
+.cart-total-row strong{font-size:1.05rem;color:var(--deep)}
+.cart-total-row span{font-size:1.05rem;font-weight:900;color:var(--ocean)}
+.checkout-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--sky),var(--ocean));color:#fff;border:none;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:1.02rem;font-weight:800;cursor:pointer;margin-top:14px;box-shadow:0 6px 22px rgba(192,122,58,0.4);transition:transform .2s}
+.checkout-btn:hover{transform:translateY(-2px)}
+.instapay-btn{width:100%;padding:13px 16px;background:linear-gradient(135deg,#0f766e,#115e59);color:#fff;border:none;border-radius:14px;font-family:'Tajawal',sans-serif;font-size:.97rem;font-weight:800;cursor:pointer;margin-top:10px;box-shadow:0 6px 22px rgba(15,118,110,0.35);transition:transform .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.instapay-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(15,118,110,0.45)}
+
+.toast{position:fixed;top:90px;right:20px;z-index:400;background:var(--deep);color:#fff;padding:13px 22px;border-radius:14px;font-weight:700;font-size:.93rem;box-shadow:0 8px 30px rgba(0,0,0,0.2);transform:translateX(120%);transition:transform .4s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;gap:10px;max-width:calc(100vw - 40px)}
+.toast.show{transform:translateX(0)}
+.toast .ic{color:var(--gold)}
+
+
+
+@media(max-width:1024px){
+  .about-grid{gap:36px}
+  .gallery-grid{grid-template-columns:repeat(3,1fr)}
+  .gallery-item:nth-child(1){grid-column:span 2}
+}
+@media(max-width:900px){
+  nav ul{display:none}
+  .hamburger{display:flex}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .about-img-wrap{height:280px}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}
+  .gallery-item:nth-child(1){grid-column:span 2;grid-row:auto;height:220px}
+  .gallery-item:nth-child(4){grid-column:span 2}
+  .gallery-item{height:160px}
+}
+@media(max-width:600px){
+  nav{padding:13px 16px}
+  .nav-order-btn{padding:8px 14px;font-size:.82rem}
+  section{padding:56px 16px}
+  .section-header{margin-bottom:38px}
+  .hero-cards{gap:8px;flex-wrap:wrap;justify-content:center}
+  .hero-card{padding:12px 14px;min-width:90px}
+  .hero-card strong{font-size:1.15rem}
+  .products-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+  .product-img-wrap{height:160px}
+  .cart-drawer{padding:18px 16px;width:100vw}
+  footer{padding:36px 16px 20px}
+  .cart-float{bottom:16px;left:12px;padding:10px 16px;font-size:.88rem}
+  .toast{top:74px;right:12px;left:12px;max-width:calc(100vw - 24px)}
+  .gallery-grid{display:flex;flex-direction:column;gap:10px;border-radius:16px}
+  .gallery-item{height:160px}
+  .contact-grid{gap:28px}
+  .order-form{padding:22px 18px}
+  .menu-tabs{gap:7px;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .menu-tabs::-webkit-scrollbar{display:none}
+  .tab-btn{flex-shrink:0}
+}
+@media(max-width:400px){
+  .hero h1{font-size:2rem}
+  .hero-btns{flex-direction:column;align-items:center}
+  .btn-primary,.btn-secondary{width:100%;max-width:260px}
+  .products-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .product-name{font-size:.97rem}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></symbol>
+<symbol id="i-coffee" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></symbol>
+<symbol id="i-glass" viewBox="0 0 24 24"><path d="M6 3h12l-1.5 17a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2L6 3z"/><path d="M7 9h10"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+<symbol id="i-cake" viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+<symbol id="i-droplet" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></symbol>
+<symbol id="i-cookie" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></symbol>
+<symbol id="i-flower" viewBox="0 0 24 24"><path d="M12 3c2 3 2 6 0 9-2-3-2-6 0-9z"/><path d="M12 12c3-1 6 0 8 2-2 3-5 4-8 3"/><path d="M12 12c-3-1-6 0-8 2 2 3 5 4 8 3"/></symbol>
+<symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4"/><path d="M17 5h4"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+<symbol id="i-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></symbol>
+<symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+<symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></symbol>
+<symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+<symbol id="i-arrow-left" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+<symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+<symbol id="i-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></symbol>
+<symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+</defs>
+</svg>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+<nav role="navigation" aria-label="القائمة الرئيسية">
+  <a href="#home" class="logo">Moon <span>Café</span></a>
+  <ul>
+    <li><a href="#menu">المنيو</a></li>
+    <li><a href="#about">من نحن</a></li>
+    <li><a href="#gallery">معرض</a></li>
+    <li><a href="#contact">تواصل</a></li>
+  </ul>
+  <button class="hamburger" id="hamburgerBtn" aria-label="فتح القائمة" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <button class="lang-toggle" id="langToggleBtn" onclick="toggleLang()" title="Switch Language">EN</button>
+  <button class="nav-order-btn" onclick="scrollToMenu()">اطلب الآن <i data-i="cart"></i></button>
+</nav>
+
+<div class="mobile-nav" id="mobileNav" role="navigation" aria-label="القائمة المحمولة">
+  <a href="#menu"><i data-i="coffee"></i> المنيو</a>
+  <a href="#about"><i data-i="sparkles"></i> من نحن</a>
+  <a href="#gallery"><i data-i="camera"></i> معرض</a>
+  <a href="#contact"><i data-i="phone"></i> تواصل</a>
+</div>
+
+<section class="hero" id="home">
+  <div class="hero-bubbles" id="bubbles" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i data-i="coffee"></i> استمتع بكل رشفة</div>
+    <h1>مرحباً في<br><em>Moon Café</em></h1>
+    <p>أجود أنواع السموزي، القهوة، الموهيتو، الهوت شوكليت، والكيك — كل المشروبات اللي بتحبها في مكان واحد</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="scrollToMenu()"><i data-i="glass"></i> استكشف المنيو</button>
+      <button class="btn-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">اطلب توصيل</button>
+    </div>
+    <div class="hero-cards">
+      <div class="hero-card">
+        <div class="icon"><i data-i="glass" data-s="34px" style="color:#fff"></i></div>
+        <strong>34+</strong><span>منتج طازج</span>
+      </div>
+      <div class="hero-card">
+        <div class="icon"><i data-i="star" data-s="34px" style="color:#fff"></i></div>
+        <strong>4.9</strong><span>تقييم العملاء</span>
+      </div>
+      <div class="hero-card">
+        <div class="icon"><i data-i="clock" data-s="34px" style="color:#fff"></i></div>
+        <strong>30 دقيقة</strong><span>توصيل سريع</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu-section" id="menu">
+  <div class="section-header">
+    <div class="section-tag"><i data-i="coffee"></i> قائمة المشروبات</div>
+    <h2>المنيو الخاص بنا</h2>
+    <p>مشروبات طازجة ومحضّرة يومياً بأجود المكونات</p>
+  </div>
+  <div class="menu-tabs" role="tablist" aria-label="تصفية المنتجات">
+    <button class="tab-btn active" role="tab" aria-selected="true"  data-cat="all"      onclick="filterMenu('all',this)">الكل</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-cat="smoothie" onclick="filterMenu('smoothie',this)"><i data-i="glass"></i> سموزي</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-cat="coffee"   onclick="filterMenu('coffee',this)"><i data-i="coffee"></i> قهوة</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-cat="mojito"   onclick="filterMenu('mojito',this)"><i data-i="leaf"></i> موهيتو</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-cat="cake"     onclick="filterMenu('cake',this)"><i data-i="cake"></i> كيك</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-cat="hot"      onclick="filterMenu('hot',this)"><i data-i="flame"></i> مشروبات ساخنة</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-cat="fresh"    onclick="filterMenu('fresh',this)"><i data-i="droplet"></i> عصائر منعشة</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-cat="oreo"     onclick="filterMenu('oreo',this)"><i data-i="cookie"></i> أوريو</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-cat="lotus"    onclick="filterMenu('lotus',this)"><i data-i="flower"></i> لوتس</button>
+  </div>
+  <div class="products-grid" id="productsGrid" role="list" aria-label="قائمة المنتجات"></div>
+</section>
+
+<section class="about-section" id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap">
+      <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=700&amp;q=80&amp;auto=format&amp;fit=crop" alt="Moon Café interior" loading="lazy" onerror="this.src='https://placehold.co/700x400/2e1a10/ffffff?text=Moon+Caf%c3%a9';this.onerror=null;">
+    </div>
+    <div class="about-text">
+      <div class="section-header">
+        <div class="section-tag"><i data-i="sparkles"></i> قصتنا</div>
+        <h2>أكتر من مجرد كافيه</h2>
+      </div>
+      <p>في Moon Café، بنؤمن إن كل كوب هو تجربة. بنختار المكونات بعناية ونحضّر كل مشروب بحب وإبداع، عشان تحس بالفرق من أول رشفة.</p>
+      <p style="margin-top:14px">سواء كنت بتحب السموزي الطازج، قهوة الصباح، موهيتو التانك، أو كيكة بتذوّب — عندنا كل اللي بتحبه.</p>
+      <div class="about-features">
+        <div class="feat-item"><div class="feat-icon"><i data-i="leaf"></i></div><div><strong>مكونات طبيعية 100%</strong><span>طازجة يومياً بدون مواد حافظة</span></div></div>
+        <div class="feat-item"><div class="feat-icon"><i data-i="award"></i></div><div><strong>باريستا محترف</strong><span>خبرة أكتر من 5 سنين</span></div></div>
+        <div class="feat-item"><div class="feat-icon"><i data-i="truck"></i></div><div><strong>توصيل سريع</strong><span>لحد بابك في 30 دقيقة</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery-section" id="gallery">
+  <div class="section-header">
+    <div class="section-tag"><i data-i="camera"></i> معرض الصور</div>
+    <h2>لحظات لذيذة</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=700&amp;q=80&amp;auto=format&amp;fit=crop" alt="سموزي الفواكه" loading="lazy" onerror="this.src='https://placehold.co/700x380/c07a3a/fff?text=%d8%b3%d9%85%d9%88%d8%b2%d9%8a';this.onerror=null;"><div class="gallery-overlay"><span>سموزي الفواكه</span></div></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&amp;q=80&amp;auto=format&amp;fit=crop" alt="لاتيه آرت" loading="lazy" onerror="this.src='https://placehold.co/400x300/7a4524/fff?text=%d9%84%d8%a7%d8%aa%d9%8a%d9%87';this.onerror=null;"><div class="gallery-overlay"><span>لاتيه آرت</span></div></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&amp;q=80&amp;auto=format&amp;fit=crop" alt="موهيتو منعش" loading="lazy" onerror="this.src='https://placehold.co/400x300/3f7d4e/fff?text=%d9%85%d9%88%d9%87%d9%8a%d8%aa%d9%88';this.onerror=null;"><div class="gallery-overlay"><span>موهيتو منعش</span></div></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=700&amp;q=80&amp;auto=format&amp;fit=crop" alt="كيك الشيكولاتة" loading="lazy" onerror="this.src='https://placehold.co/700x300/d9582b/fff?text=%d9%83%d9%8a%d9%83';this.onerror=null;"><div class="gallery-overlay"><span>كيك الشيكولاتة</span></div></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&amp;q=80&amp;auto=format&amp;fit=crop" alt="هوت شوكليت" loading="lazy" onerror="this.src='https://placehold.co/400x300/f2b84b/fff?text=%d9%87%d9%88%d8%aa+%d8%b4%d9%88%d9%83%d9%84%d9%8a%d8%aa';this.onerror=null;"><div class="gallery-overlay"><span>هوت شوكليت</span></div></div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="section-header">
+    <div class="section-tag"><i data-i="phone"></i> تواصل معنا</div>
+    <h2>اطلب دلوقتي</h2>
+    <p>بنوصّل لحد بابك</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>معلومات التواصل</h3>
+      <p>تواصل معنا في أي وقت — بنرد بسرعة ونجهز طلبك بأسرع وقت!</p>
+      <div class="contact-item"><div class="c-icon"><i data-i="phone"></i></div><div><strong>واتساب / تليفون</strong><span>01000000000</span></div></div>
+      <div class="contact-item"><div class="c-icon"><i data-i="clock"></i></div><div><strong>ساعات العمل</strong><span>يومياً ١٠ صبح – ١٢ منتصف الليل</span></div></div>
+      <div class="contact-item"><div class="c-icon"><i data-i="pin"></i></div><div><strong>العنوان</strong><span>Moon Café — شارع التحرير، القاهرة</span></div></div>
+      <div class="contact-item"><div class="c-icon"><i data-i="truck"></i></div><div><strong>التوصيل</strong><span>في نطاق المنطقة المحلية</span></div></div>
+    </div>
+    <div class="order-form">
+      <h3><i data-i="edit"></i> اطلب أونلاين</h3>
+      <div class="form-group"><label for="orderName">الاسم</label><input type="text" id="orderName" placeholder="اسمك الكريم" autocomplete="name"></div>
+      <div class="form-group"><label for="orderPhone">رقم الهاتف</label><input type="tel" id="orderPhone" placeholder="01000000000" autocomplete="tel" inputmode="tel" dir="ltr" style="text-align:left"></div>
+      <div class="form-group"><label for="orderAddress">العنوان</label><input type="text" id="orderAddress" placeholder="عنوان التوصيل" autocomplete="street-address"></div>
+      <div class="form-group"><label for="orderDetails">طلبك</label><textarea id="orderDetails" placeholder="اكتب طلبك هنا... (مثال: سموزي مانجو + لاتيه)"></textarea></div>
+      <button class="submit-btn" onclick="submitOrder()"><i data-i="message"></i> أرسل الطلب على واتساب</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="logo">Moon <span style="color:var(--gold);font-style:italic">Café</span></span>
+  <p>استمتع بكل رشفة — سموزي • قهوة • موهيتو • كيك • هوت شوكليت</p>
+  <div class="social-links">
+    <a href="#" title="فيسبوك" aria-label="فيسبوك"><i data-i="facebook"></i></a>
+    <a href="#" title="إنستقرام" aria-label="إنستقرام"><i data-i="instagram"></i></a>
+    <a href="https://wa.me/201000000000" title="واتساب" aria-label="واتساب"><i data-i="message"></i></a>
+    <a href="#" title="تيك توك" aria-label="تيك توك"><i data-i="music"></i></a>
+  </div>
+  <hr>
+  <small>© 2026 Moon Café Team — جميع الحقوق محفوظة | تليفون: 01000000000</small>
+  <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);font-size:.78rem;color:rgba(255,255,255,0.4);letter-spacing:.3px">
+    Powered by <strong style="color:rgba(255,255,255,0.65)">Mohamed Yousry</strong> · Copyright 2026
+  </div>
+</footer>
+
+<button class="cart-float" onclick="toggleCart()" aria-label="فتح السلة">
+  <i data-i="cart"></i>
+  <span id="cartLabel">السلة</span>
+  <span class="cart-count" id="cartCount" aria-live="polite">0</span>
+</button>
+
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()" aria-hidden="true"></div>
+
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-label="سلة التسوق">
+  <div class="cart-header">
+    <h3><i data-i="cart"></i> طلبك</h3>
+    <button class="cart-close" onclick="toggleCart()" aria-label="إغلاق السلة"><i data-i="x"></i></button>
+  </div>
+  <div id="cartItems"></div>
+  <div class="cart-total" id="cartTotal" style="display:none">
+    <div class="cart-total-row" id="subtotalRow" style="display:none"><strong>قبل الخصم:</strong><span id="subtotalPrice">0 جنيه</span></div>
+    <div class="cart-total-row" id="discountRow" style="display:none">
+      <strong style="color:#16a34a"><i data-i="tag"></i> خصم 10%:</strong>
+      <span id="discountAmount" style="color:#16a34a;font-weight:900">-0 جنيه</span>
+    </div>
+    <div class="cart-total-row"><strong>الإجمالي:</strong><span id="totalPrice">0 جنيه</span></div>
+    <button class="checkout-btn" onclick="checkoutWhatsapp()"><i data-i="message"></i> اطلب عبر واتساب</button>
+    <button class="instapay-btn" id="instapayBtn" onclick="payInstapay()" style="display:none"><i data-i="bolt"></i> ادفع الآن عبر InstaPay — <span id="instapayAmount"></span></button>
+  </div>
+  <div id="cartEmpty" style="text-align:center;padding:40px 0;color:var(--muted)">
+    <div style="margin-bottom:14px"><i data-i="cart" data-s="48px"></i></div>
+    <p style="font-weight:700">السلة فاضية</p>
+    <p style="font-size:.85rem;margin-top:6px">أضف منتجات من المنيو!</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+
+const ic = (n, s = '1.15em') => `<svg class="ic" width="${s}" height="${s}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+document.querySelectorAll('i[data-i]').forEach(el => {
+  const holder = document.createElement('span');
+  holder.innerHTML = ic(el.dataset.i, el.dataset.s || undefined);
+  const svg = holder.firstChild;
+  if (el.getAttribute('style')) svg.setAttribute('style', el.getAttribute('style'));
+  el.replaceWith(svg);
+});
+
+const CAT_COLORS = { smoothie:'d9582b', coffee:'6b4226', mojito:'3f7d4e', cake:'c2693a', hot:'8c2f1f', fresh:'b8862f', oreo:'2a2a2a', lotus:'a8643c' };
+
+const IMGS = {
+  1:'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=400&q=75&auto=format&fit=crop',
+  2:'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&q=75&auto=format&fit=crop',
+  3:'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400&q=75&auto=format&fit=crop',
+  4:'https://images.unsplash.com/photo-1502741338009-cac2772e18bc?w=400&q=75&auto=format&fit=crop',
+  5:'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=75&auto=format&fit=crop',
+  6:'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&q=75&auto=format&fit=crop',
+  7:'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=75&auto=format&fit=crop',
+  8:'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=400&q=75&auto=format&fit=crop',
+  9:'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&q=75&auto=format&fit=crop',
+  10:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=75&auto=format&fit=crop',
+  11:'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&q=75&auto=format&fit=crop',
+  12:'https://images.unsplash.com/photo-1497534446932-c925b458314e?w=400&q=75&auto=format&fit=crop',
+  13:'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&q=75&auto=format&fit=crop',
+  14:'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&q=75&auto=format&fit=crop',
+  15:'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=75&auto=format&fit=crop',
+  16:'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=400&q=75&auto=format&fit=crop',
+  17:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=75&auto=format&fit=crop',
+  18:'https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&q=75&auto=format&fit=crop',
+  19:'https://images.unsplash.com/photo-1512568400610-62da28bc8a13?w=400&q=75&auto=format&fit=crop',
+  20:'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=400&q=75&auto=format&fit=crop',
+  21:'https://images.unsplash.com/photo-1560023907-5f339617ea30?w=400&q=75&auto=format&fit=crop',
+  22:'https://images.unsplash.com/photo-1546173159-315724a31696?w=400&q=75&auto=format&fit=crop',
+  23:'https://images.unsplash.com/photo-1604929555993-6a8da1c0c8f0?w=400&q=75&auto=format&fit=crop',
+  24:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=75&auto=format&fit=crop',
+  25:'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=400&q=75&auto=format&fit=crop',
+  26:'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400&q=75&auto=format&fit=crop',
+  27:'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&q=75&auto=format&fit=crop',
+  28:'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&q=75&auto=format&fit=crop',
+  29:'https://images.unsplash.com/photo-1579954115563-e72bf1741584?w=400&q=75&auto=format&fit=crop',
+  30:'https://images.unsplash.com/photo-1522992319-0365e5f11656?w=400&q=75&auto=format&fit=crop',
+  31:'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=400&q=75&auto=format&fit=crop',
+  32:'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&q=75&auto=format&fit=crop',
+  33:'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=400&q=75&auto=format&fit=crop',
+  34:'https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&q=75&auto=format&fit=crop',
+};
+
+const BASE = [
+  {id:1, cat:'smoothie', name:'سموزي المانجو',    desc:'مانجو طازجة مع عصير البرتقال واللبن',        dp:45, badge:'الأكثر طلباً'},
+  {id:2, cat:'smoothie', name:'سموزي الفراولة',   desc:'فراولة طازجة مع موز وحليب',                  dp:40},
+  {id:3, cat:'smoothie', name:'سموزي الأخضر',    desc:'سبانخ + تفاح + جنجر + ليمون',                dp:42, badge:'صحي'},
+  {id:4, cat:'smoothie', name:'سموزي التوت',     desc:'توت بري وعنب أحمر مع الفانيليا',             dp:48},
+  {id:5, cat:'coffee',   name:'لاتيه بارد',       desc:'إسبريسو مع حليب كريمي وثلج',                 dp:55, badge:'مميز'},
+  {id:6, cat:'coffee',   name:'كابتشينو',         desc:'كابتشينو إيطالي بنكهة الكاكاو',              dp:50},
+  {id:7, cat:'coffee',   name:'أيس كوفي',         desc:'قهوة باردة مع كريمة مخفوقة',                 dp:55},
+  {id:8, cat:'coffee',   name:'كولد برو',          desc:'قهوة مُخمَّرة بارداً لـ 12 ساعة',             dp:60, badge:'جديد'},
+  {id:9, cat:'coffee',   name:'إسبريسو دبل',      desc:'شوت مزدوج من أجود حبوب القهوة',              dp:35},
+  {id:10,cat:'mojito',   name:'موهيتو كلاسيك',    desc:'نعناع طازج مع ليمون وصودا',                  dp:45, badge:'الأشهر'},
+  {id:11,cat:'mojito',   name:'موهيتو بطيخ',      desc:'بطيخ منعش مع نعناع وليمون',                  dp:50},
+  {id:12,cat:'mojito',   name:'موهيتو الخوخ',     desc:'خوخ طازج مع نعناع وسكر عسل',                 dp:52, badge:'جديد'},
+  {id:13,cat:'cake',     name:'كيك الشيكولاتة',   desc:'كيك شيكولاتة بلجيكي بكريمة الغاناش',        dp:75, badge:'الأفضل'},
+  {id:14,cat:'cake',     name:'كيك الريد فيلفيت', desc:'ريد فيلفيت بكريمة الجبن الأبيض',            dp:80},
+  {id:15,cat:'cake',     name:'كيك الفراولة',      desc:'كيك فانيليا مع فراولة طازجة',                dp:70},
+  {id:16,cat:'hot',      name:'هوت شوكليت',        desc:'شوكولاتة بلجيكية ساخنة مع كريمة مخفوقة',   dp:55, badge:'مفضل'},
+  {id:17,cat:'hot',      name:'شاي كرك',           desc:'شاي هندي بالحليب والهيل والزنجبيل',         dp:30},
+  {id:18,cat:'hot',      name:'هوت لاتيه قرفة',    desc:'لاتيه ساخن بنكهة القرفة والفانيليا',        dp:50},
+  {id:19,cat:'hot',      name:'هوت تشوكوهازل',     desc:'شوكولاتة بالبندق النوتيلا الساخنة',         dp:60, badge:'جديد'},
+  {id:20,cat:'fresh',    name:'ليموناضة نعناع',    desc:'ليمون طازج مع نعناع وسكر قصب',              dp:35},
+  {id:21,cat:'fresh',    name:'كلير سودا فراولة',  desc:'مشروب فراولة غازي منعش جداً',               dp:38},
+  {id:22,cat:'fresh',    name:'جوافة باشن',         desc:'جوافة مصرية مع عصير الباشن فروت',           dp:40},
+  {id:23,cat:'oreo',    name:'أوريو كولد برو',      desc:'قهوة باردة بالأوريو مع كريمة مخفوقة وثلج',  dp:65, badge:'جديد'},
+  {id:24,cat:'oreo',    name:'أوريو فرابتشينو',     desc:'فرابتشينو كريمي بالأوريو والشوكولاتة',       dp:70, badge:'الأكثر طلباً'},
+  {id:25,cat:'oreo',    name:'أوريو سموزي',          desc:'سموزي كريمي بالأوريو والموز والحليب',        dp:60},
+  {id:26,cat:'oreo',    name:'أوريو موهيتو بارد',   desc:'موهيتو الأوريو مع الحليب والثلج المهروس',   dp:58},
+  {id:27,cat:'oreo',    name:'أوريو هوت شوكليت',    desc:'شوكولاتة ساخنة بالأوريو مع كريمة طازجة',   dp:65},
+  {id:28,cat:'oreo',    name:'أوريو لاتيه ساخن',    desc:'لاتيه ساخن بكريمة الأوريو والفانيليا',      dp:60},
+  {id:29,cat:'lotus',   name:'لوتس فرابتشينو بارد', desc:'فرابتشينو لوتس كريمي مع صوص الكراميل',      dp:75, badge:'الأشهر'},
+  {id:30,cat:'lotus',   name:'لوتس كولد لاتيه',     desc:'لاتيه بارد بزبدة اللوتس وثلج الكريمة',     dp:70},
+  {id:31,cat:'lotus',   name:'لوتس سموزي كريمي',    desc:'سموزي اللوتس مع الموز والحليب الكريمي',     dp:65},
+  {id:32,cat:'lotus',   name:'لوتس موهيتو بارد',    desc:'موهيتو لوتس منعش مع صوص البسكويت والثلج',  dp:65, badge:'جديد'},
+  {id:33,cat:'lotus',   name:'لوتس هوت شوكليت',     desc:'شوكولاتة ساخنة بزبدة اللوتس والقرفة',      dp:70},
+  {id:34,cat:'lotus',   name:'لوتس لاتيه ساخن',     desc:'لاتيه ساخن بزبدة اللوتس الأصلية الكريمية', dp:68},
+];
+
+const fb = (p) => `https://placehold.co/500x350/${CAT_COLORS[p.cat]||'c07a3a'}/ffffff?text=${encodeURIComponent(p.name)}`;
+
+let products = [];
+let cart = [];
+
+(function() {
+  if (window.matchMedia('(hover:none)').matches) { document.body.classList.add('no-hover'); return; }
+  const c = document.getElementById('cursor'), d = document.getElementById('cursorDot');
+  if (!c || !d) return;
+  document.addEventListener('mousemove', e => { c.style.left = d.style.left = e.clientX+'px'; c.style.top = d.style.top = e.clientY+'px'; });
+  document.addEventListener('mousedown', () => c.style.transform = 'translate(-50%,-50%) scale(1.6)');
+  document.addEventListener('mouseup',   () => c.style.transform = 'translate(-50%,-50%) scale(1)');
+})();
+
+(function() {
+  const c = document.getElementById('bubbles'); if (!c) return;
+  for (let i = 0; i < 18; i++) {
+    const b = document.createElement('div'); b.className = 'bubble';
+    const s = Math.random()*80+20;
+    b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s`;
+    c.appendChild(b);
+  }
+})();
+
+(function() {
+  const btn = document.getElementById('hamburgerBtn'), nav = document.getElementById('mobileNav');
+  if (!btn || !nav) return;
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('open'); nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', btn.classList.contains('open'));
+  });
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    btn.classList.remove('open'); nav.classList.remove('open'); btn.setAttribute('aria-expanded','false');
+  }));
+})();
+
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav'); if (!nav) return;
+  nav.style.padding = window.scrollY > 60 ? '10px 40px' : '';
+}, {passive:true});
+
+function renderProducts(filter = 'all') {
+  const grid = document.getElementById('productsGrid'); if (!grid) return;
+  const list = filter === 'all' ? products : products.filter(p => p.cat === filter);
+  if (!list.length) {
+    grid.innerHTML = `<div style="text-align:center;padding:60px;color:var(--muted);grid-column:1/-1">${ic('search','3rem')}<p style="margin-top:12px;font-weight:700">لا توجد منتجات في هذا القسم</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p => `
+    <div class="product-card" role="listitem" onclick="addToCart(${p.id})">
+      <div class="product-img-wrap">
+        <img class="product-img" src="${p.img}" alt="${p.name}" loading="lazy"
+          onerror="this.src='${fb(p)}';this.onerror=null;">
+        ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <div class="product-price">${p.price.toLocaleString('ar-EG')} <span>جنيه</span></div>
+          <button class="add-btn" onclick="event.stopPropagation();addToCart(${p.id})" aria-label="أضف ${p.name}">${ic('plus','1em')}</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function filterMenu(cat, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+  btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+  renderProducts(cat);
+}
+
+function addToCart(id) {
+  const p = products.find(x => x.id === id); if (!p) return;
+  const ex = cart.find(x => x.id === id);
+  if (ex) ex.qty++; else cart.push({...p, qty:1});
+  updateCartUI(); showToast(`${p.name} اتضافت للسلة`);
+}
+
+function updateCartUI() {
+  const total = cart.reduce((s,i) => s+i.qty, 0);
+  const cel = document.getElementById('cartCount'); if (cel) cel.textContent = total;
+  const items = document.getElementById('cartItems');
+  const empty = document.getElementById('cartEmpty');
+  const totEl = document.getElementById('cartTotal');
+  if (!items || !empty || !totEl) return;
+  if (!cart.length) { empty.style.display='block'; totEl.style.display='none'; items.innerHTML=''; return; }
+  empty.style.display='none'; totEl.style.display='block';
+  items.innerHTML = cart.map(i => `
+    <div class="cart-item">
+      <img class="cart-item-img" src="${i.img}" alt="${i.name}" loading="lazy"
+        onerror="this.src='https://placehold.co/62x62/${CAT_COLORS[i.cat]||'c07a3a'}/fff?text=Moon';this.onerror=null;">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-price">${(i.price*i.qty).toLocaleString('ar-EG')} جنيه</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
+          <span class="qty-num">${i.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button>
+        </div>
+      </div>
+      <button class="remove-item" onclick="removeItem(${i.id})" aria-label="حذف">${ic('trash')}</button>
+    </div>`).join('');
+
+  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const hasDiscount = subtotal > 1500;
+  const discountAmt = hasDiscount ? Math.round(subtotal * 0.10) : 0;
+  const finalTotal  = subtotal - discountAmt;
+
+  const subtotalRow = document.getElementById('subtotalRow');
+  const discountRow = document.getElementById('discountRow');
+  const subtotalPriceEl = document.getElementById('subtotalPrice');
+  const discountAmtEl   = document.getElementById('discountAmount');
+  const tp = document.getElementById('totalPrice');
+  const instapayBtn = document.getElementById('instapayBtn');
+  const instapayAmt = document.getElementById('instapayAmount');
+
+  if (hasDiscount) {
+    if(subtotalRow) subtotalRow.style.display='flex';
+    if(discountRow) discountRow.style.display='flex';
+    if(subtotalPriceEl) subtotalPriceEl.textContent = subtotal.toLocaleString('ar-EG') + ' جنيه';
+    if(discountAmtEl)   discountAmtEl.textContent   = '-' + discountAmt.toLocaleString('ar-EG') + ' جنيه';
+  } else {
+    if(subtotalRow) subtotalRow.style.display='none';
+    if(discountRow) discountRow.style.display='none';
+  }
+  if (tp) tp.textContent = finalTotal.toLocaleString('ar-EG') + ' جنيه';
+  if (instapayBtn) instapayBtn.style.display = 'flex';
+  if (instapayAmt) instapayAmt.textContent   = finalTotal.toLocaleString('ar-EG') + ' جنيه';
+}
+
+function changeQty(id, d) { const i = cart.find(x => x.id===id); if (!i) return; i.qty+=d; if (i.qty<=0) cart=cart.filter(x=>x.id!==id); updateCartUI(); }
+function removeItem(id)    { cart=cart.filter(x=>x.id!==id); updateCartUI(); }
+function toggleCart()      { document.getElementById('cartDrawer')?.classList.toggle('open'); document.getElementById('cartOverlay')?.classList.toggle('open'); }
+
+function checkoutWhatsapp() {
+  if (!cart.length) { showToast('السلة فاضية!', 'warn'); return; }
+  showCustomerInfoModal('whatsapp');
+}
+
+function genRef() { return '#' + String(Date.now()).slice(-6); }
+
+function _doCheckoutWhatsapp(custName, custPhone, orderType) {
+  const items = cart.map(i => `• ${i.name} × ${i.qty} = ${(i.price*i.qty).toLocaleString('ar-EG')} جنيه`).join('\n');
+  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const hasDiscount = subtotal > 1500;
+  const discountAmt = hasDiscount ? Math.round(subtotal * 0.10) : 0;
+  const total = subtotal - discountAmt;
+  const discountLine = hasDiscount ? `\nخصم 10%: -${discountAmt.toLocaleString('ar-EG')} جنيه` : '';
+  const ref = genRef();
+  const msg = `*طلب جديد من Moon Café*\n\nرقم الطلب: ${ref}\nالاسم: ${custName}\nالهاتف: ${custPhone}\n${orderType||'—'}\n\n${items}${discountLine}\n\n*الإجمالي: ${total.toLocaleString('ar-EG')} جنيه*\n\nشكراً!`;
+  window.open(`https://wa.me/201000000000?text=${encodeURIComponent(msg)}`,'_blank');
+  cart=[]; updateCartUI(); toggleCart();
+  showOrderConfirmation(ref, total, custName, custPhone, 'whatsapp');
+}
+
+function payInstapay() {
+  if (!cart.length) { showToast('السلة فاضية!', 'warn'); return; }
+  showCustomerInfoModal('instapay');
+}
+
+let _instapayMsg = '';
+let _instapayInfo = null;
+
+function _doPayInstapay(custName, custPhone, orderType) {
+  const subtotal    = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const hasDiscount = subtotal > 1500;
+  const discountAmt = hasDiscount ? Math.round(subtotal * 0.10) : 0;
+  const total       = subtotal - discountAmt;
+  const itemsList   = cart.map(i => `• ${i.name} × ${i.qty}`).join('\n');
+  const ref         = genRef();
+
+  _instapayMsg = `*دفع InstaPay جديد*\n\nرقم الطلب: ${ref}\nالاسم: ${custName}\nالهاتف: ${custPhone}\n${orderType||'—'}\n\n${itemsList}\n\n*المبلغ: ${total.toLocaleString('ar-EG')} جنيه*\n\nتم الدفع، وهبعت لقطة شاشة الدفع هنا في المحادثة.`;
+  _instapayInfo = { ref, total, custName, custPhone };
+
+  window.open(`https://ipn.eg/S/mahmoud_alashmouny/instapay/2Uf587?amount=${total}`, '_blank');
+  toggleCart();
+  cart = []; updateCartUI();
+  showInstapayModal();
+}
+
+function showInstapayModal() {
+  const existing = document.getElementById('instapayModal');
+  if (existing) existing.remove();
+  const { ref, total } = _instapayInfo;
+
+  const modal = document.createElement('div');
+  modal.id = 'instapayModal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;animation:fadeIn .25s ease';
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:24px;padding:32px 28px;max-width:460px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,0.25);position:relative;animation:slideUp .3s cubic-bezier(.22,1,.36,1)">
+      <button onclick="document.getElementById('instapayModal').remove()" style="position:absolute;top:14px;left:14px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#a39386;line-height:1;display:flex">${ic('x')}</button>
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="width:60px;height:60px;border-radius:18px;background:linear-gradient(135deg,#0f766e,#115e59);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff">
+          ${ic('card','28px')}
+        </div>
+        <h3 style="font-family:'Tajawal',sans-serif;font-size:1.25rem;font-weight:800;color:#134e4a;margin-bottom:4px">تأكيد الدفع عبر InstaPay</h3>
+        <p style="color:#7a6a5f;font-size:.88rem">طلب رقم <strong style="color:#0f766e">${ref}</strong> — المبلغ: <strong style="color:#16a34a">${total.toLocaleString('ar-EG')} جنيه</strong></p>
+      </div>
+      <div style="background:#f0fdfa;border-radius:14px;padding:14px 16px;margin-bottom:18px;font-size:.85rem;color:#0f766e;line-height:1.7">
+        ${ic('check-circle')} تم فتح InstaPay — بعد ما تدفع، ابعت الطلب على واتساب وارفق لقطة شاشة الدفع في المحادثة
+      </div>
+      <button onclick="sendInstapayOrder()" style="width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#0f766e,#115e59);color:#fff;font-family:'Tajawal',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(15,118,110,0.35)">
+        ${ic('message')} إرسال الطلب على واتساب
+      </button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function sendInstapayOrder() {
+  const info = _instapayInfo; if (!info) return;
+  window.open(`https://wa.me/201000000000?text=${encodeURIComponent(_instapayMsg)}`, '_blank');
+  document.getElementById('instapayModal')?.remove();
+  showOrderConfirmation(info.ref, info.total, info.custName, info.custPhone, 'instapay');
+}
+
+function submitOrder() {
+  const name    = document.getElementById('orderName')?.value.trim();
+  const phone   = document.getElementById('orderPhone')?.value.trim();
+  const address = document.getElementById('orderAddress')?.value.trim();
+  const details = document.getElementById('orderDetails')?.value.trim();
+  if (!name||!phone||!details) { showToast('من فضلك أكمل البيانات المطلوبة', 'warn'); return; }
+  if (!/^01[0-9]{9}$/.test(phone)) { showToast('رقم الهاتف غير صحيح (01XXXXXXXXX)', 'warn'); return; }
+  const ref = genRef();
+  const msg = `*طلب جديد - Moon Café*\n\nرقم الطلب: ${ref}\nالاسم: ${name}\nالهاتف: ${phone}\nالعنوان: ${address||'لم يُحدد'}\n\nالطلب:\n${details}\n\nشكراً!`;
+  window.open(`https://wa.me/201000000000?text=${encodeURIComponent(msg)}`,'_blank');
+  ['orderName','orderPhone','orderAddress','orderDetails'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  showOrderConfirmation(ref, '—', name, phone, 'whatsapp');
+}
+
+function showCustomerInfoModal(flow) {
+  const existing = document.getElementById('customerInfoModal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'customerInfoModal';
+  modal.innerHTML = `
+    <div class="cim-box">
+      <button onclick="document.getElementById('customerInfoModal').remove()" style="position:absolute;top:14px;left:14px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#a39386;line-height:1;display:flex">${ic('x')}</button>
+      <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#c07a3a,#7a4524);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#fff">
+        ${ic('user','26px')}
+      </div>
+      <div class="cim-title">بيانات العميل</div>
+      <div class="cim-sub">أدخل اسمك ورقم هاتفك قبل إتمام الطلب</div>
+      <div class="cim-field">
+        <label for="cimName">الاسم الكريم <span style="color:#ef4444">*</span></label>
+        <input type="text" id="cimName" placeholder="مثال: محمد أحمد" autocomplete="name">
+      </div>
+      <div class="cim-field">
+        <label for="cimPhone">رقم الهاتف <span style="color:#ef4444">*</span></label>
+        <input type="tel" id="cimPhone" placeholder="01000000000" autocomplete="tel" inputmode="tel" dir="ltr" style="text-align:left">
+      </div>
+      <div class="cim-field">
+        <label>طريقة الاستلام <span style="color:#ef4444">*</span></label>
+        <div style="display:flex;gap:10px;margin-top:6px">
+          <button type="button" id="cimDineInBtn" onclick="setOrderMode('dinein')">${ic('utensils')} على الطاولة</button>
+          <button type="button" id="cimTakeawayBtn" onclick="setOrderMode('takeaway')">${ic('bag')} تيك أواي</button>
+        </div>
+      </div>
+      <div class="cim-field" id="cimTableWrap">
+        <label for="cimTable">رقم الطاولة <span style="color:#ef4444">*</span></label>
+        <input type="number" id="cimTable" min="1" placeholder="مثال: 5" inputmode="numeric">
+      </div>
+      <button class="cim-confirm" onclick="submitCustomerInfo('${flow}')">
+        متابعة ${ic('arrow-left')}
+      </button>
+    </div>`;
+  document.body.appendChild(modal);
+  setTimeout(() => document.getElementById('cimName')?.focus(), 100);
+  setOrderMode('dinein');
+}
+
+let _orderMode = 'dinein';
+function setOrderMode(mode) {
+  _orderMode = mode;
+  const dineBtn = document.getElementById('cimDineInBtn');
+  const tkBtn   = document.getElementById('cimTakeawayBtn');
+  const tableWrap = document.getElementById('cimTableWrap');
+  if (!dineBtn || !tkBtn) return;
+  const base = 'flex:1;padding:12px 8px;border-radius:12px;font-family:\'Tajawal\',sans-serif;font-weight:800;cursor:pointer;font-size:.88rem;';
+  const on   = 'border:2px solid #c07a3a;background:#f7ede1;color:#7a4524;';
+  const off  = 'border:2px solid #e7ddd2;background:#fff;color:#7a6a5f;';
+  dineBtn.style.cssText = base + (mode === 'dinein'   ? on : off);
+  tkBtn.style.cssText   = base + (mode === 'takeaway' ? on : off);
+  if (tableWrap) tableWrap.style.display = mode === 'dinein' ? 'block' : 'none';
+}
+
+function submitCustomerInfo(flow) {
+  const name  = document.getElementById('cimName')?.value.trim();
+  const phone = document.getElementById('cimPhone')?.value.trim();
+  if (!name)  { showToast('من فضلك أدخل اسمك', 'warn'); return; }
+  if (!phone) { showToast('من فضلك أدخل رقم هاتفك', 'warn'); return; }
+  if (!/^01[0-9]{9}$/.test(phone)) { showToast('رقم الهاتف غير صحيح (01XXXXXXXXX)', 'warn'); return; }
+
+  let tableNumber = null;
+  if (_orderMode === 'dinein') {
+    tableNumber = document.getElementById('cimTable')?.value.trim();
+    if (!tableNumber) { showToast('من فضلك أدخل رقم الطاولة', 'warn'); return; }
+  }
+  const orderType = _orderMode === 'dinein' ? `طاولة رقم ${tableNumber}` : 'تيك أواي';
+
+  document.getElementById('customerInfoModal')?.remove();
+  if (flow === 'whatsapp') _doCheckoutWhatsapp(name, phone, orderType);
+  else if (flow === 'instapay') _doPayInstapay(name, phone, orderType);
+}
+
+let _lastConfirmMsg = '';
+
+function showOrderConfirmation(orderId, total, custName, custPhone, method) {
+  const existing = document.getElementById('orderConfirmModal');
+  if (existing) existing.remove();
+
+  const methodIcon  = method === 'instapay' ? ic('bolt') : ic('message');
+  const methodText  = method === 'instapay' ? 'InstaPay' : 'واتساب';
+  const totalLine   = total !== '—' && total ? `<div style="font-size:1.1rem;font-weight:900;color:#16a34a;margin-bottom:4px">${typeof total==='number'?total.toLocaleString('ar-EG'):total} جنيه</div>` : '';
+
+  _lastConfirmMsg = `*تأكيد طلبك — Moon Café*\n\nالاسم: ${custName}\nرقم الطلب: ${orderId}\n${total!=='—'&&total?'المبلغ: '+(typeof total==='number'?total.toLocaleString('ar-EG'):total)+' جنيه\n':''}طريقة الدفع: ${methodText}\nوقت الطلب: ${new Date().toLocaleString('ar-EG')}\n\nشكراً لاختيارك Moon Café\nطلبك قيد التجهيز وسيصلك قريباً`;
+
+  const modal = document.createElement('div');
+  modal.id = 'orderConfirmModal';
+  modal.innerHTML = `
+    <div class="ocm-box">
+      <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#16a34a,#15803d);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#fff">
+        ${ic('check','34px')}
+      </div>
+      <div style="font-size:1.25rem;font-weight:900;color:#1f1410;margin-bottom:6px">تم استلام طلبك!</div>
+      <div style="font-size:.9rem;color:#7a6a5f;margin-bottom:18px">شكراً ${custName}، طلبك قيد التجهيز</div>
+      <div style="background:#f0fdf4;border-radius:14px;padding:14px 18px;margin-bottom:18px;text-align:right">
+        <div style="font-size:.82rem;color:#7a6a5f;margin-bottom:2px">رقم الطلب</div>
+        <div style="font-size:1.1rem;font-weight:900;color:#0f766e;margin-bottom:8px">${orderId}</div>
+        ${totalLine}
+        <div style="font-size:.82rem;color:#7a6a5f">طريقة الدفع: ${methodIcon} ${methodText}</div>
+      </div>
+      <button onclick="sendConfirmToCustomer('${custPhone}')" style="width:100%;padding:13px;border:none;border-radius:14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;margin-bottom:10px;transition:transform .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        ${ic('message')} استلم رسالة تأكيد على واتساب
+      </button>
+      <button onclick="document.getElementById('orderConfirmModal').remove()" style="width:100%;padding:10px;border:1px solid #e7ddd2;border-radius:14px;background:transparent;color:#7a6a5f;font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:600;cursor:pointer">
+        إغلاق
+      </button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function sendConfirmToCustomer(custPhone) {
+  const phoneIntl = '2' + custPhone.replace(/^0/, '');
+  window.open(`https://wa.me/${phoneIntl}?text=${encodeURIComponent(_lastConfirmMsg)}`, '_blank');
+  document.getElementById('orderConfirmModal')?.remove();
+}
+
+function showToast(msg, type = 'ok') {
+  const t = document.getElementById('toast'); if (!t) return;
+  const icon = { ok:'check-circle', warn:'alert', err:'x-circle', del:'trash' }[type] || 'check-circle';
+  t.innerHTML = ic(icon) + '<span></span>';
+  t.lastChild.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+function scrollToMenu() { document.getElementById('menu')?.scrollIntoView({behavior:'smooth'}); }
+
+const TRANSLATIONS = {
+  ar: {
+    dir: 'rtl', lang: 'ar',
+    navMenu: 'المنيو', navAbout: 'من نحن', navGallery: 'معرض', navContact: 'تواصل',
+    navOrderBtn: 'اطلب الآن', langBtn: 'EN',
+    heroBadge: 'استمتع بكل رشفة',
+    heroTitle: 'مرحباً في<br><em>Moon Café</em>',
+    heroSubtitle: 'أجود أنواع السموزي، القهوة، الموهيتو، الهوت شوكليت، والكيك — كل المشروبات اللي بتحبها في مكان واحد',
+    heroBtn1: 'استكشف المنيو', heroBtn2: 'اطلب توصيل',
+    heroCard1: 'منتج طازج', heroCard2: 'تقييم العملاء', heroCard3: 'توصيل سريع',
+    menuTag: 'قائمة المشروبات', menuTitle: 'المنيو الخاص بنا', menuSub: 'مشروبات طازجة ومحضّرة يومياً بأجود المكونات',
+    cartLabel: 'السلة',
+    orderBtn: 'اطلب عبر واتساب',
+    formTitle: 'اطلب أونلاين',
+    formName: 'الاسم', formNamePh: 'اسمك الكريم',
+    formPhone: 'رقم الهاتف',
+    formAddress: 'العنوان', formAddressPh: 'عنوان التوصيل',
+    formDetails: 'طلبك', formDetailsPh: 'اكتب طلبك هنا... (مثال: سموزي مانجو + لاتيه)',
+    submitBtn: 'أرسل الطلب على واتساب',
+    footerDesc: 'استمتع بكل رشفة — سموزي • قهوة • موهيتو • كيك • هوت شوكليت',
+    mobile: ['المنيو','من نحن','معرض','تواصل'],
+  },
+  en: {
+    dir: 'ltr', lang: 'en',
+    navMenu: 'Menu', navAbout: 'About', navGallery: 'Gallery', navContact: 'Contact',
+    navOrderBtn: 'Order Now', langBtn: 'عربي',
+    heroBadge: 'Moon Every Sip',
+    heroTitle: 'Welcome to<br><em>Moon Café</em>',
+    heroSubtitle: 'The finest smoothies, coffee, mojitos, hot chocolate & cakes — all your favourite drinks in one place',
+    heroBtn1: 'Explore Menu', heroBtn2: 'Order Delivery',
+    heroCard1: 'Fresh Products', heroCard2: 'Customer Rating', heroCard3: 'Fast Delivery',
+    menuTag: 'Drinks Menu', menuTitle: 'Our Menu', menuSub: 'Fresh drinks prepared daily with the finest ingredients',
+    cartLabel: 'Cart',
+    orderBtn: 'Order via WhatsApp',
+    formTitle: 'Order Online',
+    formName: 'Name', formNamePh: 'Your name',
+    formPhone: 'Phone Number',
+    formAddress: 'Address', formAddressPh: 'Delivery address',
+    formDetails: 'Your Order', formDetailsPh: 'Write your order here... (e.g. Mango Smoothie + Latte)',
+    submitBtn: 'Send Order via WhatsApp',
+    footerDesc: 'Moon every sip — Smoothies • Coffee • Mojito • Cake • Hot Chocolate',
+    mobile: ['Menu','About','Gallery','Contact'],
+  }
+};
+let currentLang = 'ar';
+
+function toggleLang() {
+  currentLang = currentLang === 'ar' ? 'en' : 'ar';
+  applyLang(currentLang);
+}
+
+function applyLang(lang) {
+  const t = TRANSLATIONS[lang];
+  const html = document.documentElement;
+  html.setAttribute('lang', t.lang);
+  html.setAttribute('dir', t.dir);
+  const setHTML = (el, h) => { if (el) el.innerHTML = h; };
+  const setText = (el, s) => { if (el) el.textContent = s; };
+
+  const navLinks = document.querySelectorAll('nav ul li a');
+  setText(navLinks[0], t.navMenu);
+  setText(navLinks[1], t.navAbout);
+  setText(navLinks[2], t.navGallery);
+  setText(navLinks[3], t.navContact);
+  setHTML(document.querySelector('.nav-order-btn'), t.navOrderBtn + ' ' + ic('cart'));
+  setText(document.getElementById('langToggleBtn'), t.langBtn);
+  setHTML(document.querySelector('.hero-badge'), ic('coffee') + ' ' + t.heroBadge);
+  setHTML(document.querySelector('.hero h1'), t.heroTitle);
+  setText(document.querySelector('.hero p'), t.heroSubtitle);
+  const heroBtns = document.querySelectorAll('.hero-btns button');
+  setHTML(heroBtns[0], ic('glass') + ' ' + t.heroBtn1);
+  setText(heroBtns[1], t.heroBtn2);
+  const heroCardSpans = document.querySelectorAll('.hero-card span');
+  setText(heroCardSpans[0], t.heroCard1);
+  setText(heroCardSpans[1], t.heroCard2);
+  setText(heroCardSpans[2], t.heroCard3);
+  setHTML(document.querySelector('.menu-section .section-tag'), ic('coffee') + ' ' + t.menuTag);
+  setText(document.querySelector('.menu-section h2'), t.menuTitle);
+  setText(document.querySelector('.menu-section .section-header p'), t.menuSub);
+  setText(document.getElementById('cartLabel'), t.cartLabel);
+  setHTML(document.querySelector('.checkout-btn'), ic('message') + ' ' + t.orderBtn);
+  setHTML(document.querySelector('.order-form h3'), ic('edit') + ' ' + t.formTitle);
+  setText(document.querySelector('label[for="orderName"]'), t.formName);
+  const namePh = document.getElementById('orderName'); if (namePh) namePh.placeholder = t.formNamePh;
+  setText(document.querySelector('label[for="orderPhone"]'), t.formPhone);
+  setText(document.querySelector('label[for="orderAddress"]'), t.formAddress);
+  const addrPh = document.getElementById('orderAddress'); if (addrPh) addrPh.placeholder = t.formAddressPh;
+  setText(document.querySelector('label[for="orderDetails"]'), t.formDetails);
+  const detPh = document.getElementById('orderDetails'); if (detPh) detPh.placeholder = t.formDetailsPh;
+  setHTML(document.querySelector('.submit-btn'), ic('message') + ' ' + t.submitBtn);
+  setText(document.querySelector('footer p'), t.footerDesc);
+
+  const mobileIcons = ['coffee','sparkles','camera','phone'];
+  document.querySelectorAll('.mobile-nav a').forEach((a, i) => {
+    if (t.mobile[i]) a.innerHTML = ic(mobileIcons[i]) + ' ' + t.mobile[i];
+  });
+}
+
+
+products = BASE.map(p => ({ ...p, price: p.dp, img: IMGS[p.id] || fb(p) }));
+renderProducts();
+updateCartUI();
+</script>
+</body>
+</html>
